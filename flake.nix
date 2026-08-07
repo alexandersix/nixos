@@ -15,11 +15,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    herdr = {
-      url = "github:ogulcancelik/herdr/v0.6.4";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     qylock = {
       url = "github:Darkkal44/qylock";
       inputs.nixpkgs.follows = "nixpkgsUnstable";

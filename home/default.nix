@@ -78,14 +78,7 @@
       gh
       godot
       godot-export-templates-bin
-      # Herdr v0.6.4 ships a stale Rust vendor hash. Keep the pinned version
-      # from the original configuration while correcting that upstream hash.
-      (inputs.herdr.packages.${pkgs.stdenv.hostPlatform.system}.default.overrideAttrs (old: {
-        cargoDeps = pkgs.rustPlatform.fetchCargoVendor {
-          inherit (old) src;
-          hash = "sha256-yRT31RnfjSQy5bxFXVvM9zRM59WAPrBozu3S2tag6s8=";
-        };
-      }))
+      pkgsUnstable.herdr
       lazydocker
       lazygit
       lazysql
@@ -203,5 +196,4 @@
       };
     };
   };
-
 }
