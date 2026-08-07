@@ -18,6 +18,7 @@
     packages = with pkgs; [
       # Core command-line tools
       curl
+      fastfetch
       fd
       jq
       ripgrep
