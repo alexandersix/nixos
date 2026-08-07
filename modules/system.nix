@@ -72,6 +72,9 @@
     };
 
     gamemode.enable = true;
+    # Mason installs upstream Linux binaries, including tree-sitter-cli.
+    # Provide the standard dynamic loader they expect on NixOS.
+    nix-ld.enable = true;
     mango = {
       enable = true;
       addLoginEntry = true;
@@ -80,6 +83,11 @@
       enable = true;
       recommendedServices.enable = true;
       systemd.enable = false;
+    };
+    qylock = {
+      enable = true;
+      theme = "clockwork/orbital";
+      quickshell.enable = false;
     };
     obs-studio = {
       enable = true;

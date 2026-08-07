@@ -1,6 +1,7 @@
 {
   inputs,
   pkgs,
+  pkgsUnstable,
   ...
 }: let
   username = import ./username.nix;
@@ -31,7 +32,7 @@ in {
     useGlobalPkgs = true;
     useUserPackages = true;
     backupFileExtension = "backup";
-    extraSpecialArgs = {inherit inputs username;};
+    extraSpecialArgs = {inherit inputs pkgsUnstable username;};
     users.${username} = import ../../home;
   };
 

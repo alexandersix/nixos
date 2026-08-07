@@ -2,11 +2,11 @@
   inputs,
   lib,
   pkgs,
+  pkgsUnstable,
   username,
   ...
 }: {
   imports = [
-    inputs.mangowm.hmModules.mango
     inputs.noctalia.homeModules.default
   ];
 
@@ -68,12 +68,13 @@
       alejandra
       beekeeper-studio
       bruno
-      codex
+      pkgsUnstable.codex
       dbeaver-bin
       deadnix
       devenv
       docker-buildx
       docker-compose
+      gcc
       gh
       godot
       godot-export-templates-bin
@@ -191,6 +192,9 @@
       enable = true;
       autosuggestion.enable = true;
       syntaxHighlighting.enable = true;
+      initContent = ''
+        bindkey -M viins '^R' history-incremental-search-backward
+      '';
       shellAliases = {
         ll = "ls -la";
         gs = "git status";
@@ -200,68 +204,4 @@
     };
   };
 
-  wayland.windowManager.mango = {
-    enable = true;
-
-    settings = {
-      xkb_rules_layout = "us";
-
-      gappih = 5;
-      gappiv = 5;
-      gappoh = 10;
-      gappov = 10;
-      borderpx = 2;
-      border_radius = 6;
-      animations = 1;
-
-      bind = [
-        "SUPER,r,reload_config"
-        "SUPER,Return,spawn,foot"
-        "SUPER,d,spawn,fuzzel"
-        "SUPER,q,killclient,"
-        "SUPER+SHIFT,e,quit"
-        "SUPER,f,togglefullscreen,"
-        "SUPER,1,view,1,0"
-        "SUPER,2,view,2,0"
-        "SUPER+SHIFT,1,tag,1,0"
-        "SUPER+SHIFT,2,tag,2,0"
-        "SUPER,space,spawn,noctalia msg panel-toggle launcher"
-        "SUPER,s,spawn,noctalia msg panel-toggle control-center"
-        "SUPER,comma,spawn,noctalia msg settings-toggle"
-        "NONE,XF86AudioRaiseVolume,spawn,noctalia msg volume-up"
-        "NONE,XF86AudioLowerVolume,spawn,noctalia msg volume-down"
-        "NONE,XF86AudioMute,spawn,noctalia msg volume-mute"
-        "NONE,XF86MonBrightnessUp,spawn,noctalia msg brightness-up"
-        "NONE,XF86MonBrightnessDown,spawn,noctalia msg brightness-down"
-      ];
-
-      tagrule = [
-        "id:1,layout_name:tile"
-        "id:2,layout_name:tile"
-      ];
-
-      blur = 1;
-      blur_layer = 0;
-      blur_optimized = 1;
-      blur_params_num_passes = 2;
-      blur_params_radius = 5;
-      blur_params_noise = 0.02;
-      blur_params_brightness = 0.9;
-      blur_params_contrast = 0.9;
-      blur_params_saturation = 1.0;
-      layer_animations = 0;
-      shadows = 1;
-      layer_shadows = 0;
-      shadow_only_floating = 0;
-      shadows_size = 4;
-      shadows_blur = 12;
-      shadows_position_x = 2;
-      shadows_position_y = 2;
-      shadowscolor = "0x000000ff";
-    };
-
-    autostart_sh = ''
-      noctalia &
-    '';
-  };
 }
