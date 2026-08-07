@@ -36,7 +36,7 @@
   };
 
   boot.loader = {
-    limine.enable = true;
+    systemd-boot.enable = true;
     efi.canTouchEfiVariables = true;
   };
 

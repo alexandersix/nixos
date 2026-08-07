@@ -23,8 +23,10 @@ directory.
 
 ## Installing on a new machine
 
-First, complete the graphical NixOS installation normally. Create the user you
-want to keep, boot the installed system, and log in as that regular user.
+First, boot the installer in UEFI mode and complete the graphical NixOS
+installation normally. Create the user you want to keep, boot the installed
+system, and log in as that regular user. This configuration uses systemd-boot
+and expects an EFI System Partition mounted by the installer.
 
 Git and the GitHub CLI are part of the final configuration, but they are not
 installed yet. Open an ephemeral shell containing both without changing the
