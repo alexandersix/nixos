@@ -53,7 +53,11 @@
 
   environment = {
     sessionVariables.NIXOS_OZONE_WL = "1";
-    systemPackages = [pkgs.chromium];
+    systemPackages = [
+      pkgs.bash
+      pkgs.bibata-cursors
+      pkgs.chromium
+    ];
   };
 
   programs.chromium = {
@@ -114,6 +118,10 @@
     displayManager.sddm = {
       enable = true;
       wayland.enable = true;
+      settings.Theme = {
+        CursorTheme = "Bibata-Modern-Classic";
+        CursorSize = 20;
+      };
     };
     pipewire = {
       enable = true;
