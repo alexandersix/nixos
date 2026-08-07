@@ -88,9 +88,17 @@
       recommendedServices.enable = true;
       systemd.enable = false;
     };
-    silentSDDM = {
+    noctalia-greeter = {
       enable = true;
-      theme = "rei";
+      settings = {
+        cursor = {
+          theme = "Bibata-Modern-Classic";
+          size = 20;
+          path = "${pkgs.bibata-cursors}/share/icons";
+        };
+        idle.timeout = 300;
+        keyboard.layout = "us";
+      };
     };
     obs-studio = {
       enable = true;
@@ -114,14 +122,6 @@
   };
 
   services = {
-    displayManager.sddm = {
-      enable = true;
-      wayland.enable = true;
-      settings.Theme = {
-        CursorTheme = "Bibata-Modern-Classic";
-        CursorSize = 20;
-      };
-    };
     pipewire = {
       enable = true;
       alsa.enable = true;

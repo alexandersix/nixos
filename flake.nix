@@ -15,8 +15,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    silentSDDM = {
-      url = "github:uiriansan/SilentSDDM";
+    noctalia-greeter = {
+      url = "github:noctalia-dev/noctalia-greeter";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -31,7 +31,7 @@
     nixpkgs,
     nixpkgsUnstable,
     noctalia,
-    silentSDDM,
+    noctalia-greeter,
     ...
   }: let
     system = "x86_64-linux";
@@ -70,7 +70,7 @@
         home-manager.nixosModules.home-manager
         mangowm.nixosModules.mango
         noctalia.nixosModules.default
-        silentSDDM.nixosModules.default
+        noctalia-greeter.nixosModules.default
       ];
     };
 

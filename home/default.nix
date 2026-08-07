@@ -171,6 +171,7 @@
       systemd.enable = false;
       settings = {
         shell.font = "JetBrainsMono Nerd Font";
+        shell.greeter_sync.auto_sync = true;
         theme = {
           mode = "dark";
           source = "builtin";
