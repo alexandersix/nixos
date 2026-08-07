@@ -15,9 +15,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    qylock = {
-      url = "github:Darkkal44/qylock";
-      inputs.nixpkgs.follows = "nixpkgsUnstable";
+    silentSDDM = {
+      url = "github:uiriansan/SilentSDDM";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     # Noctalia's cached branch intentionally uses its own nixpkgs revision so
@@ -31,7 +31,7 @@
     nixpkgs,
     nixpkgsUnstable,
     noctalia,
-    qylock,
+    silentSDDM,
     ...
   }: let
     system = "x86_64-linux";
@@ -70,7 +70,7 @@
         home-manager.nixosModules.home-manager
         mangowm.nixosModules.mango
         noctalia.nixosModules.default
-        qylock.nixosModules.default
+        silentSDDM.nixosModules.default
       ];
     };
 

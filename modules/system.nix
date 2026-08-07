@@ -88,10 +88,9 @@
       recommendedServices.enable = true;
       systemd.enable = false;
     };
-    qylock = {
+    silentSDDM = {
       enable = true;
-      theme = "clockwork/orbital";
-      quickshell.enable = false;
+      theme = "rei";
     };
     obs-studio = {
       enable = true;
