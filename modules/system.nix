@@ -49,6 +49,11 @@
 
   fonts.packages = [pkgs.nerd-fonts.jetbrains-mono];
 
+  xdg.portal.wlr.settings.screencast = {
+    chooser_type = "simple";
+    chooser_cmd = "${pkgs.slurp}/bin/slurp -f 'Monitor: %o' -or";
+  };
+
   programs.zsh.enable = true;
 
   environment = {
@@ -75,7 +80,9 @@
       enable = true;
     };
 
+    dconf.enable = true;
     gamemode.enable = true;
+    gpu-screen-recorder.enable = true;
     # Mason installs upstream Linux binaries, including tree-sitter-cli.
     # Provide the standard dynamic loader they expect on NixOS.
     nix-ld.enable = true;
@@ -122,12 +129,16 @@
   };
 
   services = {
+    gvfs.enable = true;
+
     pipewire = {
       enable = true;
       alsa.enable = true;
       pulse.enable = true;
       jack.enable = true;
     };
+
+    udisks2.enable = true;
   };
 
   security.rtkit.enable = true;

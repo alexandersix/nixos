@@ -61,6 +61,13 @@ garbage collection, and store optimization were also preserved.
 
 ## Intentional implementation differences
 
+### Noctalia shell utilities
+
+Fuzzel and Waybar were removed after the port because Noctalia now supplies
+the application launcher and bar. Theme selection is also left to Noctalia's
+writable UI state rather than pinned in the Home Manager configuration, so UI
+theme changes survive NixOS rebuilds.
+
 ### Neovim
 
 The source used `nix-wrapper-modules` to publish a standalone

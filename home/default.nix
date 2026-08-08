@@ -1,4 +1,5 @@
 {
+  config,
   inputs,
   lib,
   pkgs,
@@ -33,6 +34,9 @@
       telegram-desktop
       zoom-us
 
+      # Desktop utilities
+      nautilus
+
       # Content creation, media, graphics, and audio
       ardour
       audacity
@@ -55,6 +59,7 @@
       lsp-plugins
       mediainfo
       mpv
+      mpvpaper
       pandoc
       qpwgraph
       reaper
@@ -134,6 +139,21 @@
     };
   };
 
+  services.udiskie.enable = true;
+
+  xdg.configFile."mango/autostart.sh" = {
+    executable = true;
+    force = true;
+    text = ''
+      #!/bin/sh
+
+      systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE DISPLAY
+      systemctl --user restart xdg-desktop-portal-wlr.service
+
+      noctalia &
+    '';
+  };
+
   programs = {
     home-manager.enable = true;
 
@@ -168,12 +188,206 @@
     noctalia = {
       enable = true;
       systemd.enable = false;
-      settings = {
-        shell.font_family = "JetBrainsMono Nerd Font";
-        shell.polkit_agent = true;
-        shell.greeter_sync = {
-          auto_sync = true;
-          privilege_command = "pkexec";
+      settings = let
+        defaultWallpaper = "${config.programs.noctalia.package}/share/noctalia/assets/noctalia-wallpaper.png";
+      in {
+        shell = {
+          font_family = "JetBrainsMono Nerd Font";
+          polkit_agent = true;
+          panel_anchor_bar = "top";
+          greeter_sync = {
+            auto_sync = true;
+            privilege_command = "pkexec";
+          };
+        };
+
+        plugins = {
+          enabled = [
+            "noctalia/mpvpaper"
+            "noctalia/screen_recorder"
+            "noctalia/wallhaven"
+          ];
+          auto_update = true;
+        };
+
+        control_center.calendar.show_week_numbers = true;
+
+        desktop_widgets.enabled = false;
+
+        location.address = "Greenville, SC";
+
+        lockscreen_widgets = {
+          enabled = false;
+          schema_version = 2;
+          widget_order = ["lockscreen-login-box@HDMI-A-1"];
+
+          grid = {
+            cell_size = 16;
+            major_interval = 4;
+            visible = true;
+          };
+
+          widget."lockscreen-login-box@HDMI-A-1" = {
+            box_height = 70.0;
+            box_width = 400.0;
+            cx = 1920.0;
+            cy = 2041.0;
+            output = "HDMI-A-1";
+            rotation = 0.0;
+            type = "login_box";
+
+            settings = {
+              background_color = "surface_variant";
+              background_opacity = 0.88;
+              background_radius = 12.0;
+              center_password_text = false;
+              input_opacity = 1.0;
+              input_radius = 6.0;
+              show_caps_lock = true;
+              show_keyboard_layout = true;
+              show_login_button = true;
+            };
+          };
+        };
+
+        theme = {
+          builtin = "Gruvbox";
+          community_palette = "Oxocarbon";
+          mode = "dark";
+          source = "builtin";
+          wallpaper_scheme = "m3-content";
+
+          templates = {
+            builtin_ids = [
+              "foot"
+              "gtk3"
+              "gtk4"
+              "ghostty"
+              "mango"
+              "qt"
+              "starship"
+            ];
+            community_ids = [
+              "opencode"
+              "pi-agent"
+              "zen-browser"
+              "telegram"
+              "blender"
+              "gimp"
+              "neovim"
+              "obsidian"
+              "zed"
+              "fuzzel"
+              "fastfetch"
+              "obs"
+              "bat"
+              "lazygit"
+              "yazi"
+            ];
+          };
+        };
+
+        wallpaper = {
+          default.path = defaultWallpaper;
+          last.path = defaultWallpaper;
+        };
+
+        weather.unit = "imperial";
+
+        widget = {
+          brightness.enabled = false;
+          clipboard.enabled = false;
+          control-center.enabled = false;
+          launcher.enabled = false;
+          network.enabled = false;
+          screen-recorder = {
+            enabled = false;
+            type = "noctalia/screen_recorder:recorder";
+          };
+          video-wallpaper.type = "noctalia/mpvpaper:mpvpaper";
+          wallhaven.type = "noctalia/wallhaven:wallhaven";
+        };
+
+        bar = let
+          frame = position:
+            {
+              inherit position;
+              thickness = 10;
+              background_opacity = 1.0;
+              radius = 10;
+              concave_edge_corners = true;
+              margin_ends = 0;
+              margin_edge = 0;
+              reserve_space = true;
+              shadow = false;
+              padding = 0;
+              widget_spacing = 0;
+              start = [];
+              center = [];
+              end = [];
+            }
+            // (
+              if position == "bottom"
+              then {
+                radius_bottom_left = 0;
+                radius_bottom_right = 0;
+              }
+              else if position == "left"
+              then {
+                radius_top_left = 0;
+                radius_bottom_left = 0;
+              }
+              else {
+                radius_top_right = 0;
+                radius_bottom_right = 0;
+              }
+            );
+        in {
+          order = [
+            "left"
+            "right"
+            "top"
+            "bottom"
+          ];
+
+          top = {
+            position = "top";
+            thickness = 34;
+            background_opacity = 1.0;
+            radius = 10;
+            radius_top_left = 0;
+            radius_top_right = 0;
+            concave_edge_corners = true;
+            margin_ends = 0;
+            margin_edge = 0;
+            reserve_space = true;
+            shadow = false;
+            start = [
+              "workspaces"
+              "wallpaper"
+              "wallhaven"
+              "video-wallpaper"
+            ];
+            center = ["clock"];
+            end = [
+              "tray"
+              "screen-recorder"
+              "media"
+              "clipboard"
+              "network"
+              "bluetooth"
+              "volume"
+              "brightness"
+              "battery"
+              "control-center"
+              "notifications"
+              "session"
+            ];
+          };
+
+          bottom = frame "bottom";
+          left = frame "left";
+          right = frame "right";
         };
       };
     };
