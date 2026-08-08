@@ -150,8 +150,6 @@
       };
     };
 
-    fuzzel.enable = true;
-
     git = {
       enable = true;
       lfs.enable = true;
@@ -171,21 +169,14 @@
       enable = true;
       systemd.enable = false;
       settings = {
-        shell.font = "JetBrainsMono Nerd Font";
+        shell.font_family = "JetBrainsMono Nerd Font";
         shell.polkit_agent = true;
         shell.greeter_sync = {
           auto_sync = true;
           privilege_command = "pkexec";
         };
-        theme = {
-          mode = "dark";
-          source = "builtin";
-          builtin = "Catppuccin";
-        };
       };
     };
-
-    waybar.enable = true;
 
     zsh = {
       enable = true;
