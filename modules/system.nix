@@ -138,6 +138,11 @@
     extraPackages = [pkgs.rocmPackages.clr.icd];
   };
 
+  hardware.logitech.wireless = {
+    enable = true;
+    enableGraphical = true;
+  };
+
   virtualisation = {
     docker = {
       enable = true;
