@@ -1,5 +1,4 @@
 {
-  config,
   inputs,
   lib,
   pkgs,
@@ -189,7 +188,7 @@
       enable = true;
       systemd.enable = false;
       settings = let
-        defaultWallpaper = "${config.programs.noctalia.package}/share/noctalia/assets/noctalia-wallpaper.png";
+        defaultWallpaper = "/home/alexandersix/Pictures/Wallpapers/wallhaven-4xvdxo.jpg";
       in {
         shell = {
           font_family = "JetBrainsMono Nerd Font";
@@ -290,6 +289,7 @@
         wallpaper = {
           default.path = defaultWallpaper;
           last.path = defaultWallpaper;
+          monitors."HDMI-A-1".path = defaultWallpaper;
         };
 
         weather.unit = "imperial";
@@ -304,6 +304,10 @@
             enabled = false;
             type = "noctalia/screen_recorder:recorder";
           };
+          top-bar-gap = {
+            type = "spacer";
+            length = 16;
+          };
           video-wallpaper.type = "noctalia/mpvpaper:mpvpaper";
           wallhaven.type = "noctalia/wallhaven:wallhaven";
         };
@@ -312,7 +316,7 @@
           frame = position:
             {
               inherit position;
-              thickness = 10;
+              thickness = 12;
               background_opacity = 1.0;
               radius = 10;
               concave_edge_corners = true;
@@ -352,7 +356,7 @@
 
           top = {
             position = "top";
-            thickness = 34;
+            thickness = 40;
             background_opacity = 1.0;
             radius = 10;
             radius_top_left = 0;
@@ -362,25 +366,27 @@
             margin_edge = 0;
             reserve_space = true;
             shadow = false;
-            start = [
-              "workspaces"
-              "wallpaper"
-              "wallhaven"
-              "video-wallpaper"
-            ];
+            widget_spacing = 6;
+            start = ["workspaces"];
             center = ["clock"];
             end = [
               "tray"
               "screen-recorder"
+              "top-bar-gap"
               "media"
               "clipboard"
               "network"
+              "top-bar-gap"
               "bluetooth"
+              "top-bar-gap"
               "volume"
               "brightness"
+              "top-bar-gap"
               "battery"
               "control-center"
+              "top-bar-gap"
               "notifications"
+              "top-bar-gap"
               "session"
             ];
           };
