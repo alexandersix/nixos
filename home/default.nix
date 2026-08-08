@@ -172,7 +172,11 @@
       systemd.enable = false;
       settings = {
         shell.font = "JetBrainsMono Nerd Font";
-        shell.greeter_sync.auto_sync = true;
+        shell.polkit_agent = true;
+        shell.greeter_sync = {
+          auto_sync = true;
+          privilege_command = "pkexec";
+        };
         theme = {
           mode = "dark";
           source = "builtin";
