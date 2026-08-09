@@ -138,6 +138,13 @@
     };
   };
 
+  gtk = {
+    enable = true;
+
+    gtk3.extraConfig.gtk-application-prefer-dark-theme = 1;
+    gtk4.extraConfig.gtk-application-prefer-dark-theme = 1;
+  };
+
   services.udiskie.enable = true;
 
   programs = {
@@ -300,12 +307,15 @@
         };
 
         bar = let
+          frameThickness = 12;
+          topThickness = 40;
+          innerRadius = 16;
           frame = position:
             {
               inherit position;
-              thickness = 12;
+              thickness = frameThickness;
               background_opacity = 1.0;
-              radius = 10;
+              radius = innerRadius;
               concave_edge_corners = true;
               margin_ends = 0;
               margin_edge = 0;
@@ -343,9 +353,9 @@
 
           top = {
             position = "top";
-            thickness = 40;
+            thickness = topThickness;
             background_opacity = 1.0;
-            radius = 10;
+            radius = innerRadius;
             radius_top_left = 0;
             radius_top_right = 0;
             concave_edge_corners = true;
