@@ -78,23 +78,28 @@ PRIVATE_REPOSITORIES=(
   "alexandersix/utility-scripts|$HOME/bin"
   "alexandersix/nvim|$HOME/dotfiles/nvim"
   "alexandersix/herdr|$HOME/dotfiles/herdr"
+  "alexandersix/mango|$HOME/dotfiles/mango"
 )
 ```
 
-`nvim` and `herdr` use separate directories beneath `~/dotfiles` because two
-Git repositories cannot share the same checkout root. Setup links both into
-the locations their applications expect:
+`nvim`, `herdr`, and `mango` use separate directories beneath `~/dotfiles`
+because Git repositories cannot share the same checkout root. Setup links
+them into the locations their applications expect:
 
 ```bash
 CONFIG_LINKS=(
   "$HOME/dotfiles/nvim|$HOME/.config/nvim"
   "$HOME/dotfiles/herdr|$HOME/.config/herdr"
+  "$HOME/dotfiles/mango|$HOME/.config/mango"
 )
 ```
 
 Home Manager installs the Neovim executable and provides `vi`/`vim` aliases,
 but does not manage its configuration. The private `alexandersix/nvim`
 checkout is the sole source for `~/.config/nvim`.
+
+The `alexandersix/mango` checkout is likewise the sole source for
+`~/.config/mango`; Home Manager installs no files in that directory.
 
 Home Manager adds `~/bin` to the session `PATH`. Setup enforces the executable
 bit on every script with a `#!` interpreter line in that directory after

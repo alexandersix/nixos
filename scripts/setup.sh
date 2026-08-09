@@ -6,11 +6,13 @@ PRIVATE_REPOSITORIES=(
   "alexandersix/utility-scripts|$HOME/bin"
   "alexandersix/nvim|$HOME/dotfiles/nvim"
   "alexandersix/herdr|$HOME/dotfiles/herdr"
+  "alexandersix/mango|$HOME/dotfiles/mango"
 )
 
 CONFIG_LINKS=(
   "$HOME/dotfiles/nvim|$HOME/.config/nvim"
   "$HOME/dotfiles/herdr|$HOME/.config/herdr"
+  "$HOME/dotfiles/mango|$HOME/.config/mango"
 )
 
 EXECUTABLE_DIRECTORIES=(
