@@ -213,22 +213,6 @@
   in {
     home-manager.enable = true;
 
-    alacritty = {
-      enable = true;
-      settings = {
-        general.import = ["~/.config/alacritty/themes/noctalia.toml"];
-        window = {
-          padding = {
-            x = 4;
-            y = 4;
-          };
-          opacity = 0.8;
-          blur = true;
-        };
-        font.normal.family = terminalFont;
-      };
-    };
-
     direnv = {
       enable = true;
       nix-direnv.enable = true;
