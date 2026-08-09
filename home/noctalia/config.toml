@@ -1,0 +1,227 @@
+[bar]
+order = [ "left", "right", "top", "bottom" ]
+
+    [bar.bottom]
+    background_opacity = 1.0
+    center = []
+    concave_edge_corners = true
+    end = []
+    margin_edge = 0
+    margin_ends = 0
+    padding = 0
+    position = "bottom"
+    radius = 16
+    radius_bottom_left = 0
+    radius_bottom_right = 0
+    reserve_space = true
+    shadow = false
+    start = []
+    thickness = 12
+    widget_spacing = 0
+
+    [bar.left]
+    background_opacity = 1.0
+    center = []
+    concave_edge_corners = true
+    end = []
+    margin_edge = 0
+    margin_ends = 0
+    padding = 0
+    position = "left"
+    radius = 16
+    radius_bottom_left = 0
+    radius_top_left = 0
+    reserve_space = true
+    shadow = false
+    start = []
+    thickness = 12
+    widget_spacing = 0
+
+    [bar.right]
+    background_opacity = 1.0
+    center = []
+    concave_edge_corners = true
+    end = []
+    margin_edge = 0
+    margin_ends = 0
+    padding = 0
+    position = "right"
+    radius = 16
+    radius_bottom_right = 0
+    radius_top_right = 0
+    reserve_space = true
+    shadow = false
+    start = []
+    thickness = 12
+    widget_spacing = 0
+
+    [bar.top]
+    background_opacity = 1.0
+    center = [ "clock" ]
+    concave_edge_corners = true
+    end = [
+        "tray",
+        "screen-recorder",
+        "top-bar-gap",
+        "media",
+        "clipboard",
+        "network",
+        "top-bar-gap",
+        "bluetooth",
+        "top-bar-gap",
+        "volume",
+        "brightness",
+        "top-bar-gap",
+        "battery",
+        "control-center",
+        "top-bar-gap",
+        "notifications",
+        "top-bar-gap",
+        "session"
+    ]
+    margin_edge = 0
+    margin_ends = 0
+    position = "top"
+    radius = 16
+    radius_top_left = 0
+    radius_top_right = 0
+    reserve_space = true
+    shadow = false
+    start = [ "workspaces", "workspace-layout-gap", "mango-layout" ]
+    thickness = 40
+    widget_spacing = 6
+
+[control_center.calendar]
+show_week_numbers = true
+
+[desktop_widgets]
+enabled = false
+
+[location]
+address = "Greenville, SC"
+
+[lockscreen_widgets]
+enabled = false
+schema_version = 2
+widget_order = [ "lockscreen-login-box@HDMI-A-1" ]
+
+    [lockscreen_widgets.grid]
+    cell_size = 16
+    major_interval = 4
+    visible = true
+
+    [lockscreen_widgets.widget."lockscreen-login-box@HDMI-A-1"]
+    box_height = 70.0
+    box_width = 400.0
+    cx = 1920.0
+    cy = 2041.0
+    output = "HDMI-A-1"
+    rotation = 0.0
+    type = "login_box"
+
+        [lockscreen_widgets.widget."lockscreen-login-box@HDMI-A-1".settings]
+        background_color = "surface_variant"
+        background_opacity = 0.88
+        background_radius = 12.0
+        center_password_text = false
+        input_opacity = 1.0
+        input_radius = 6.0
+        show_caps_lock = true
+        show_keyboard_layout = true
+        show_login_button = true
+
+[plugins]
+auto_update = true
+enabled = [ "noctalia/mpvpaper", "noctalia/screen_recorder", "noctalia/wallhaven", "alexandersix/mango-layout" ]
+
+[shell]
+font_family = "JetBrainsMono Nerd Font"
+panel_anchor_bar = "top"
+polkit_agent = true
+
+    [shell.greeter_sync]
+    auto_sync = true
+    privilege_command = "pkexec"
+
+    [shell.launcher.providers.wallpaper]
+    prefix = ""
+
+[theme]
+builtin = "Gruvbox"
+community_palette = "Everforest"
+mode = "dark"
+source = "builtin"
+wallpaper_scheme = "m3-content"
+
+    [theme.templates]
+    builtin_ids = [ "alacritty", "foot", "gtk3", "gtk4", "ghostty", "mango", "qt", "starship" ]
+    community_ids = [
+        "opencode",
+        "pi-agent",
+        "zen-browser",
+        "telegram",
+        "blender",
+        "gimp",
+        "neovim",
+        "obsidian",
+        "zed",
+        "fuzzel",
+        "fastfetch",
+        "obs",
+        "bat",
+        "lazygit",
+        "yazi"
+    ]
+
+[wallpaper]
+directory = "/home/alexandersix/wallpapers"
+
+    [wallpaper.default]
+    path = "/home/alexandersix/wallpapers/gruvbox/bridge.jpg"
+
+    [wallpaper.last]
+    path = "/home/alexandersix/wallpapers/gruvbox/bridge.jpg"
+
+    [wallpaper.monitors.HDMI-A-1]
+    path = "/home/alexandersix/wallpapers/gruvbox/bridge.jpg"
+
+[weather]
+unit = "imperial"
+
+[widget.brightness]
+enabled = false
+
+[widget.clipboard]
+enabled = false
+
+[widget.control-center]
+enabled = false
+
+[widget.launcher]
+enabled = false
+
+[widget.mango-layout]
+type = "alexandersix/mango-layout:layout"
+
+[widget.network]
+enabled = false
+
+[widget.screen-recorder]
+enabled = false
+type = "noctalia/screen_recorder:recorder"
+
+[widget.top-bar-gap]
+length = 16
+type = "spacer"
+
+[widget.video-wallpaper]
+type = "noctalia/mpvpaper:mpvpaper"
+
+[widget.wallhaven]
+type = "noctalia/wallhaven:wallhaven"
+
+[widget.workspace-layout-gap]
+type = "spacer"
+
+    [widget.workspace-layout-gap.settings]
+    length = 4

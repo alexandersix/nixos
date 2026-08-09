@@ -101,6 +101,21 @@ checkout is the sole source for `~/.config/nvim`.
 The `alexandersix/mango` checkout is likewise the sole source for
 `~/.config/mango`; Home Manager installs no files in that directory.
 
+## Saving Noctalia UI changes
+
+Noctalia writes Settings UI changes to its state directory. To promote the
+current merged user configuration into this repository, run:
+
+```console
+sync-noctalia-config
+```
+
+The command validates and atomically updates `home/noctalia/config.toml`.
+Home Manager uses that snapshot as the portable Noctalia configuration, then
+applies the shared terminal font and locally managed plugin settings as Nix
+overrides. Pass `--repo PATH` or set `NIXOS_CONFIG_DIR` if the repository is not
+in one of the standard locations checked by the script.
+
 Home Manager adds `~/bin` to the session `PATH`. Setup enforces the executable
 bit on every script with a `#!` interpreter line in that directory after
 cloning or updating the utility scripts repository.
