@@ -47,7 +47,13 @@
 
   i18n.defaultLocale = "en_US.UTF-8";
 
-  fonts.packages = [pkgs.nerd-fonts.jetbrains-mono];
+  fonts = {
+    packages = [
+      pkgs.inter
+      pkgs.nerd-fonts.jetbrains-mono
+    ];
+    fontconfig.defaultFonts.sansSerif = ["Inter"];
+  };
 
   xdg.portal.wlr.settings.screencast = {
     chooser_type = "simple";
