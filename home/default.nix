@@ -504,6 +504,7 @@
       shellAliases = {
         ll = "ls -la";
         gs = "git status";
+        sail = "sh $([ -f sail ] && echo sail || echo vendor/bin/sail)";
         vi = "nvim";
         vim = "nvim";
       };
