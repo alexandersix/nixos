@@ -100,6 +100,7 @@
       pi-coding-agent
       statix
       whisper-cpp
+      pkgsUnstable.worktrunk
       xh
 
       # Web development convenience tools. Projects should still pin exact
@@ -500,6 +501,7 @@
       syntaxHighlighting.enable = true;
       initContent = ''
         bindkey -M viins '^R' history-incremental-search-backward
+        eval "$(${pkgsUnstable.worktrunk}/bin/wt config shell init zsh)"
       '';
       shellAliases = {
         ll = "ls -la";
