@@ -38,6 +38,7 @@
       # Desktop utilities
       alacritty
       nautilus
+      wl-clipboard
 
       # Content creation, media, graphics, and audio
       ardour
