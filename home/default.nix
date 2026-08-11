@@ -84,6 +84,7 @@
       docker-compose
       gcc
       gh
+      go
       godot
       godot-export-templates-bin
       pkgsUnstable.herdr
@@ -98,6 +99,7 @@
       neovim
       nurl
       pi-coding-agent
+      python3
       statix
       whisper-cpp
       pkgsUnstable.worktrunk
