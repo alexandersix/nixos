@@ -1,4 +1,5 @@
 {
+  config,
   inputs,
   lib,
   pkgs,
@@ -66,6 +67,7 @@
       pandoc
       qpwgraph
       reaper
+      rmpc
       scribus
       synfigstudio
       typst
@@ -131,6 +133,84 @@
     ];
 
     file = {
+      ".config/rmpc/config.ron".text = ''
+        #![enable(implicit_some)]
+        #![enable(unwrap_newtypes)]
+        #![enable(unwrap_variant_newtypes)]
+        (
+          address: "127.0.0.1:6600",
+          album_art: (
+            method: None,
+          ),
+          tabs: [
+            (
+              name: "Queue",
+              pane: Split(
+                direction: Vertical,
+                panes: [
+                  (
+                    size: "3",
+                    borders: "ALL",
+                    border_symbols: Rounded,
+                    pane: Pane(QueueHeader()),
+                  ),
+                  (
+                    size: "100%",
+                    borders: "LEFT | RIGHT",
+                    border_symbols: Rounded,
+                    pane: Pane(Queue),
+                  ),
+                  (
+                    size: "7",
+                    borders: "ALL",
+                    border_symbols: Rounded,
+                    border_title: [(kind: Text(" Lyrics "))],
+                    border_title_alignment: Right,
+                    pane: Pane(Lyrics),
+                  ),
+                ],
+              ),
+            ),
+            (
+              name: "Directories",
+              borders: "ALL",
+              border_symbols: Rounded,
+              pane: Pane(Directories),
+            ),
+            (
+              name: "Artists",
+              borders: "ALL",
+              border_symbols: Rounded,
+              pane: Pane(Artists),
+            ),
+            (
+              name: "Album Artists",
+              borders: "ALL",
+              border_symbols: Rounded,
+              pane: Pane(AlbumArtists),
+            ),
+            (
+              name: "Albums",
+              borders: "ALL",
+              border_symbols: Rounded,
+              pane: Pane(Albums),
+            ),
+            (
+              name: "Playlists",
+              borders: "ALL",
+              border_symbols: Rounded,
+              pane: Pane(Playlists),
+            ),
+            (
+              name: "Search",
+              borders: "ALL",
+              border_symbols: Rounded,
+              pane: Pane(Search),
+            ),
+          ],
+        )
+      '';
+
       ".local/share/noctalia/plugins/mango-layout/plugin.toml".text = ''
         id = "alexandersix/mango-layout"
         name = "Mango Layout"
@@ -210,7 +290,27 @@
     gtk4.extraConfig.gtk-application-prefer-dark-theme = 1;
   };
 
-  services.udiskie.enable = true;
+  services = {
+    mpd = {
+      enable = true;
+      musicDirectory = "${config.home.homeDirectory}/Music";
+      extraConfig = ''
+        auto_update "yes"
+        restore_paused "yes"
+        zeroconf_enabled "no"
+
+        audio_output {
+          type "pipewire"
+          name "PipeWire"
+          mixer_type "software"
+        }
+      '';
+    };
+
+    mpd-mpris.enable = true;
+
+    udiskie.enable = true;
+  };
 
   programs = let
     terminalFont = "JetBrainsMono Nerd Font";
@@ -507,9 +607,18 @@
         eval "$(${pkgsUnstable.worktrunk}/bin/wt config shell init zsh)"
       '';
       shellAliases = {
+        c = "clear";
+        ga = "git add";
+        gl = "git pull";
+        glog = "git log --oneline --graph";
+        gp = "git push";
         ll = "ls -la";
         gs = "git status";
+        gst = "git status";
+        pa = "php artisan";
         sail = "sh $([ -f sail ] && echo sail || echo vendor/bin/sail)";
+        sa = "sail artisan";
+        stream = "herdr --session stream";
         vi = "nvim";
         vim = "nvim";
       };
