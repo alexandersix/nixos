@@ -135,6 +135,7 @@
   };
 
   services = {
+    flatpak.enable = true;
     gvfs.enable = true;
 
     pipewire = {
@@ -148,6 +149,9 @@
   };
 
   security.rtkit.enable = true;
+
+  # Mouseless uses uinput to provide global mouse control on Wayland.
+  hardware.uinput.enable = true;
 
   hardware.graphics = {
     enable = true;

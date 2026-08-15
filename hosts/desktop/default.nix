@@ -20,6 +20,9 @@ in {
     shell = pkgs.zsh;
     extraGroups = [
       "docker"
+      # Mouseless needs raw keyboard input and virtual input device access.
+      "input"
+      "uinput"
       "kvm"
       "libvirtd"
       "networkmanager"
