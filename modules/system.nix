@@ -50,7 +50,13 @@
   fonts = {
     packages = [
       pkgs.inter
+      pkgs.nerd-fonts.blex-mono
+      pkgs.nerd-fonts.gohufont
+      pkgs.nerd-fonts.hurmit
+      pkgs.nerd-fonts.iosevka
       pkgs.nerd-fonts.jetbrains-mono
+      pkgs.nerd-fonts.terminess-ttf
+      pkgs.nerd-fonts.zed-mono
     ];
     fontconfig.defaultFonts.sansSerif = ["Inter"];
   };
