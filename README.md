@@ -135,6 +135,35 @@ sudo nixos-rebuild switch --flake path:.#desktop
 Using `path:.` includes newly created icons before they have been added to Git.
 After the files are tracked, the usual `--flake .#desktop` form also works.
 
+### Future URL-scheme handlers
+
+The web-app module could later support links such as `mailto:` or `zoommtg:`
+without changing how ordinary launchers work. Keep the visible launcher for the
+app, and generate a second, hidden desktop entry for each handler. The hidden
+entry would declare the appropriate `x-scheme-handler/<scheme>` MIME type,
+accept the incoming URI through `%u`, and be registered declaratively through
+`xdg.mimeApps`. A handler should be allowed to become either an available
+choice or the default application for its scheme.
+
+Handlers must be app-specific rather than passing an arbitrary URI directly to
+Chromium. For example, a Gmail handler would safely translate a `mailto:` URI
+into Gmail's HTTPS compose URL before opening it in Chromium app mode. Passing
+an external scheme back to Chromium can cause it to invoke the same system
+handler recursively. Each handler should therefore:
+
+- accept and parse exactly one URI;
+- verify its expected scheme;
+- translate it with a real URL parser and correct percent encoding;
+- restrict the result to an allowlisted HTTPS origin; and
+- avoid `eval` or interpolating URI contents into shell commands.
+
+When implementing this, add optional handler declarations to each `webApps`
+entry, generate hidden `NoDisplay=true` desktop entries separately from the
+visible launchers, and assert that at most one app is the default for each
+scheme. Do not claim the general `http:` or `https:` schemes. Implement the
+framework alongside its first real consumer, such as Gmail/HEY for `mailto:`
+or Zoom for `zoommtg:`, so its URI transformation can be tested concretely.
+
 Codex and Pi share the repository-local `manage-webapps` skill from
 `.agents/skills/`. Ask Codex to `Use $manage-webapps to add ...`, or run
 `/skill:manage-webapps add ...` in Pi. The skill edits the declaration and icon,
