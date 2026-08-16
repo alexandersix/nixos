@@ -314,6 +314,7 @@
   };
 
   programs = let
+    noctaliaFont = "Iosevka Fixed";
     terminalFont = "JetBrainsMono Nerd Font";
   in {
     home-manager.enable = true;
@@ -357,7 +358,7 @@
             defaultWallpaper = "/home/alexandersix/Pictures/Wallpapers/wallhaven-4xvdxo.jpg";
           in {
             shell = {
-              font_family = terminalFont;
+              font_family = noctaliaFont;
               polkit_agent = true;
               panel_anchor_bar = "top";
               greeter_sync = {
@@ -576,7 +577,7 @@
             };
           })
           noctaliaSnapshot) {
-          shell.font_family = terminalFont;
+          shell.font_family = noctaliaFont;
           plugins.enabled = lib.unique ((noctaliaSnapshot.plugins.enabled or []) ++ ["alexandersix/mango-layout"]);
           widget."mango-layout".type = "alexandersix/mango-layout:layout";
           widget."workspace-layout-gap" = {

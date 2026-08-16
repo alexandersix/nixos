@@ -135,7 +135,7 @@ auto_update = true
 enabled = [ "noctalia/mpvpaper", "noctalia/screen_recorder", "noctalia/wallhaven", "alexandersix/mango-layout" ]
 
 [shell]
-font_family = "JetBrainsMono Nerd Font"
+font_family = "Iosevka Fixed"
 panel_anchor_bar = "top"
 polkit_agent = true
 

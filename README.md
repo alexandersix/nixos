@@ -112,7 +112,7 @@ sync-noctalia-config
 
 The command validates and atomically updates `home/noctalia/config.toml`.
 Home Manager uses that snapshot as the portable Noctalia configuration, then
-applies the shared terminal font and locally managed plugin settings as Nix
+applies the configured Noctalia font and locally managed plugin settings as Nix
 overrides. Pass `--repo PATH` or set `NIXOS_CONFIG_DIR` if the repository is not
 in one of the standard locations checked by the script.
 
