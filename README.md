@@ -120,6 +120,30 @@ Home Manager adds `~/bin` to the session `PATH`. Setup enforces the executable
 bit on every script with a `#!` interpreter line in that directory after
 cloning or updating the utility scripts repository.
 
+## Declarative web apps
+
+Chromeless Chromium web apps are declared in `home/webapps.nix`. Each entry
+generates an immutable `chromium --app=<URL>` launcher and a desktop entry that
+Noctalia discovers automatically. Icons live in `home/webapps/icons/`.
+
+Add or remove an entry and rebuild to update the launcher:
+
+```console
+sudo nixos-rebuild switch --flake path:.#desktop
+```
+
+Using `path:.` includes newly created icons before they have been added to Git.
+After the files are tracked, the usual `--flake .#desktop` form also works.
+
+Codex and Pi share the repository-local `manage-webapps` skill from
+`.agents/skills/`. Ask Codex to `Use $manage-webapps to add ...`, or run
+`/skill:manage-webapps add ...` in Pi. The skill edits the declaration and icon,
+validates the flake, and leaves activation to an explicit request.
+
+Skills do not select their own model. Model and reasoning settings belong to
+the harness session or project configuration, so invoking this skill preserves
+the active model rather than silently changing every task in the repository.
+
 Review the hardware and username changes made by setup. Because they describe
 this host, commit them to the private configuration repository when satisfied.
 

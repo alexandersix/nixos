@@ -9,6 +9,7 @@
 }: {
   imports = [
     inputs.noctalia.homeModules.default
+    ./webapps.nix
   ];
 
   home = {

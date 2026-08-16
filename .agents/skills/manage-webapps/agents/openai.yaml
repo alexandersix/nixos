@@ -1,0 +1,4 @@
+interface:
+  display_name: "Manage Web Apps"
+  short_description: "Add or remove declarative Chromium web apps"
+  default_prompt: "Use $manage-webapps to add YouTube as a declarative web app."
