@@ -296,6 +296,17 @@
   xdg = {
     configFile."mimeapps.list".force = true;
 
+    userDirs = {
+      enable = true;
+      createDirectories = true;
+
+      desktop = null;
+      documents = null;
+      projects = "${config.home.homeDirectory}/Code";
+      publicShare = null;
+      templates = null;
+    };
+
     mimeApps = {
       enable = true;
 
@@ -343,10 +354,14 @@
   in {
     home-manager.enable = true;
 
+    bat.enable = true;
+
     direnv = {
       enable = true;
       nix-direnv.enable = true;
     };
+
+    eza.enable = true;
 
     foot = {
       enable = true;
@@ -640,11 +655,13 @@
       '';
       shellAliases = {
         c = "clear";
+        cat = "bat";
         ga = "git add";
         gl = "git pull";
         glog = "git log --oneline --graph";
         gp = "git push";
-        ll = "ls -la";
+        ll = "eza -la";
+        ls = "eza";
         gs = "git status";
         gst = "git status";
         pa = "php artisan";
@@ -654,6 +671,12 @@
         vi = "nvim";
         vim = "nvim";
       };
+    };
+
+    zoxide = {
+      enable = true;
+      enableZshIntegration = true;
+      options = ["--cmd" "cd"];
     };
   };
 }
