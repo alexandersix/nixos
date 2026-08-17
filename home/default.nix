@@ -41,6 +41,7 @@
       alacritty
       file-roller
       nautilus
+      sushi
       wl-clipboard
 
       # Content creation, media, graphics, and audio
