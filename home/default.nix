@@ -60,6 +60,7 @@
       kdePackages.kdenlive
       krita
       krita-plugin-gmic
+      libreoffice
       losslesscut
       lsp-plugins
       mediainfo
