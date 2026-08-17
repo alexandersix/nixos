@@ -41,7 +41,6 @@
       alacritty
       file-roller
       nautilus
-      sushi
       wl-clipboard
 
       # Content creation, media, graphics, and audio
@@ -291,6 +290,28 @@
 
     gtk3.extraConfig.gtk-application-prefer-dark-theme = 1;
     gtk4.extraConfig.gtk-application-prefer-dark-theme = 1;
+  };
+
+  xdg = {
+    configFile."mimeapps.list".force = true;
+
+    mimeApps = {
+      enable = true;
+
+      defaultApplications = {
+        "inode/directory" = ["org.gnome.Nautilus.desktop"];
+        "video/mp4" = ["mpv.desktop"];
+        "x-scheme-handler/discord-409416265891971072" = ["discord-409416265891971072.desktop"];
+        "x-scheme-handler/tg" = ["org.telegram.desktop.desktop"];
+        "x-scheme-handler/tonsite" = ["org.telegram.desktop.desktop"];
+      };
+
+      associations.added = {
+        "video/mp4" = ["mpv.desktop"];
+        "x-scheme-handler/tg" = ["org.telegram.desktop.desktop"];
+        "x-scheme-handler/tonsite" = ["org.telegram.desktop.desktop"];
+      };
+    };
   };
 
   services = {

@@ -144,7 +144,10 @@
 
   services = {
     flatpak.enable = true;
-    gnome.gnome-keyring.enable = true;
+    gnome = {
+      gnome-keyring.enable = true;
+      sushi.enable = true;
+    };
     gvfs.enable = true;
 
     pipewire = {
