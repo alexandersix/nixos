@@ -39,6 +39,7 @@
 
       # Desktop utilities
       alacritty
+      file-roller
       nautilus
       wl-clipboard
 
