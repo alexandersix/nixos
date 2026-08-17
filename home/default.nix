@@ -54,6 +54,7 @@
       easyeffects
       ffmpeg-full
       fontforge-gtk
+      geeqie
       gimp-with-plugins
       handbrake
       imagemagick
