@@ -65,7 +65,6 @@
       losslesscut
       lsp-plugins
       mediainfo
-      mpv
       mpvpaper
       pandoc
       qpwgraph
@@ -348,6 +347,12 @@
         push.autoSetupRemote = true;
         core.editor = "nvim";
       };
+    };
+
+    mpv = {
+      enable = true;
+      config.osc = false;
+      scripts = [pkgs.mpvScripts.modernz];
     };
 
     noctalia = {
