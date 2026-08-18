@@ -40,26 +40,54 @@ The configuration already provides strong coverage in the following areas:
 
 ### Automated backups
 
-Current state: `restic` and `rclone` are installed, but the configuration does
-not declare a backup repository, schedule, retention policy, health check,
-notification path, or restore test.
+Current state: `restic` and `rclone` are installed. An intentionally inert
+Restic job now targets a future removable external SSD at
+`/mnt/workstation-backup`, covers the user's home directory with conservative
+reproducible-data exclusions, and applies initial retention rules. The job is
+manual-only until the drive has been purchased. It is also conditioned on both
+that path being a real mount point and a separately provisioned password file,
+so it cannot silently place backups on the primary filesystem. The drive, mount
+declaration, password, schedule, health check, notification path, and restore
+test do not exist yet.
 
 Home Manager's `backupFileExtension = "backup"` only preserves files that Home
 Manager replaces during activation. It is not a personal-data or system
 backup.
 
-- [ ] Decide which data belongs in backups.
+- [x] Define preliminary backup include/exclude lists.
   - Creative projects and source footage
   - Documents and other irreplaceable personal data
   - Source repositories that have no complete remote copy
-  - Dotfiles and private application configuration
+  - Mutable application state and configuration that is not recreated by this
+    repository, including browser/email profiles and creative-application
+    presets, templates, libraries, and databases
+  - Authentication and recovery material needed to reach private remote data,
+    unless it has an independently tested recovery path
   - OBS, REAPER/Ardour, Resolve, Blender, font, LUT, preset, and template state
-  - Relevant secrets or an independently recoverable copy of them
-- [ ] Choose at least one local or directly attached backup destination.
+  - Selected system state outside the user's home directory only when it is
+    both valuable and not declarative, such as important VM images or Docker
+    volumes
+  - Exclude `/nix`, system packages, reproducible caches/build output, trash,
+    Steam game files, media proxies, and render scratch data by default
+- [ ] Review the preliminary exclusions after the first size estimate so that
+  no non-reproducible game saves, project assets, or application data are
+  discarded with a large cache directory.
+- [x] Choose a local or directly attached backup destination: a removable
+  external SSD to be purchased.
 - [ ] Choose an off-site destination.
 - [ ] Keep backup storage distinct from video scratch/cache storage.
-- [ ] Declare scheduled Restic jobs, preferably with
-  `services.restic.backups`.
+- [x] Declare a manual-only Restic job with `services.restic.backups` so its
+  scope, repository, exclusions, and initial retention policy are prepared.
+- [ ] Add a schedule only after the external SSD has been purchased, mounted,
+  initialized, and tested.
+- [x] Make an absent external SSD a normal skipped run rather than a failed job,
+  and ensure the backup service cannot silently create its repository on the
+  primary filesystem when the expected mount is absent.
+- [ ] Decide whether plugging in and mounting the SSD should trigger a backup in
+  addition to a persistent daily schedule.
+- [ ] Give the backup filesystem a stable label or UUID and document its mount
+  and unlock procedure. Restic repository encryption is required; whole-device
+  LUKS encryption is optional depending on the desired plug-in workflow.
 - [ ] Define retention rules for hourly, daily, weekly, monthly, and yearly
   snapshots as appropriate.
 - [ ] Ensure backup credentials are not committed to this repository.
@@ -105,20 +133,75 @@ edit. Backups and a tested restore process should exist before attempting it.
 
 ### Btrfs maintenance and snapshots
 
-Current state: `/home` and `/nix` are Btrfs subvolumes. No Btrfs snapshot tool,
-automatic scrub, or explicit SSD-trimming service is declared.
+Current state observed on August 18, 2026: `/home` and `/nix` are Btrfs
+subvolumes on the primary NVMe, while `/` mounts the filesystem top level
+rather than a dedicated root subvolume. No snapshot tool is declared. Monthly
+automatic scrub and explicit weekly `fstrim` are now declared; the mounted
+filesystem also reports asynchronous discard support. Activation and initial
+run results have not yet been verified.
 
-- [ ] Enable periodic Btrfs scrub.
-- [ ] Enable periodic `fstrim` for SSD space reclamation.
-- [ ] Decide between Snapper, btrbk, or another snapshot manager.
-- [ ] Create an intentional subvolume and snapshot design for system and user
-  data.
-- [ ] Add pre-upgrade snapshots if they improve recovery from bad activations.
-- [ ] Define snapshot retention so snapshots cannot consume the filesystem.
-- [ ] Verify that snapshots do not include high-churn or reproducible data
-  unnecessarily, especially `/nix`, caches, proxies, and render output.
-- [ ] Test rolling back a file and, if supported by the chosen design, a system
-  state.
+#### Establish a maintenance baseline
+
+- [ ] Record a baseline from `btrfs filesystem usage`, `btrfs device stats`,
+  `btrfs scrub status`, and `btrfs subvolume list` before changing the layout.
+- [x] Enable `services.btrfs.autoScrub` with a monthly schedule.
+- [ ] After activation, ensure the primary filesystem is scrubbed once, not once
+  per mounted subvolume, and inspect the initial result.
+- [x] Make the trim policy explicit with weekly `services.fstrim` rather than
+  relying on a changing module default.
+- [ ] After activation, confirm `fstrim.timer` runs and that discard reaches each
+  SSD-backed filesystem.
+- [ ] Define a free-space warning threshold. Btrfs needs working space for
+  metadata and copy-on-write operations, so total free bytes alone are not a
+  sufficient health signal; monitor allocated data and metadata usage as well.
+- [ ] Treat a routine full-filesystem balance as unnecessary. If allocation
+  becomes unbalanced, use a filtered balance only after checking filesystem
+  usage and backups.
+
+Scrub verifies checksums and asks redundant storage to repair a damaged copy.
+On this single-device filesystem it can detect corruption, but it usually
+cannot reconstruct corrupted data by itself. Any non-zero uncorrectable-error
+result must therefore be a visible backup-and-recovery event.
+
+#### Design snapshots around the data, not the mount points
+
+- [ ] Inventory which paths are irreplaceable, convenient to roll back, or
+  reproducible. At minimum, classify user documents/projects, application
+  state, `/nix`, downloads, caches, virtual-machine images, containers,
+  recordings, proxies, render output, and temporary data.
+- [ ] Decide whether snapshots are intended primarily for recovering individual
+  user files, reverting pre-upgrade system state, or both. This determines
+  whether Snapper, btrbk, or a smaller custom arrangement is the best fit.
+- [ ] Decide whether to migrate `/` into a dedicated root subvolume. The current
+  top-level root layout is not a clean foundation for atomic root snapshots and
+  rollback, and Btrfs snapshots do not recursively include nested subvolumes.
+- [ ] Keep `/nix` out of routine user-data snapshots unless a tested system
+  rollback design specifically needs it. NixOS generations already cover much
+  of the system configuration, while snapshotting the store can retain a large
+  amount of reproducible data.
+- [ ] Create separate subvolumes or exclusions for high-churn data when the
+  chosen tool requires them. Pay particular attention to browser and build
+  caches, Docker/libvirt storage, VM images, media proxies, recordings, and
+  render scratch space; copy-on-write snapshots of active database or VM files
+  also do not guarantee application-consistent recovery.
+- [ ] Choose hourly/daily/weekly retention and a hard space guard appropriate
+  to the available capacity. Include automatic cleanup and a documented manual
+  emergency-pruning procedure.
+- [ ] Add pre-activation snapshots only if they integrate cleanly with the
+  chosen root layout and bootloader recovery path. A snapshot that cannot be
+  selected or restored from recovery media is not yet a rollback mechanism.
+
+#### Prove recovery and ongoing operation
+
+- [ ] Restore an accidentally changed file from a read-only snapshot without
+  replacing the current subvolume.
+- [ ] If system rollback is in scope, test it from bootable recovery media and
+  verify the relationship between the filesystem snapshot, the selected NixOS
+  generation, `/boot`, and any database/application state.
+- [ ] Confirm snapshot creation and pruning still work when the workstation was
+  asleep at the scheduled time and after a reboot.
+- [ ] Confirm scrub failures and snapshot/timer failures use the same durable,
+  noticeable alerting path as backup failures.
 
 Snapshots protect against accidental changes and some upgrade failures. They
 do not protect against disk failure, theft, or filesystem-wide corruption and
@@ -126,15 +209,57 @@ must not replace backups.
 
 ### Disk-health monitoring
 
-- [ ] Enable SMART/NVMe health monitoring, such as `services.smartd`.
-- [ ] Add `nvme-cli` for NVMe diagnostics.
-- [ ] Arrange visible notifications for failing health attributes, media
-  errors, and scrub failures.
-- [ ] Record the intended role of the second NVMe: projects, cache/scratch,
-  local backup, or something else.
+Current state observed on August 18, 2026: the host contains two 2 TB WD_BLACK
+SN7100 NVMe devices. The primary device holds the unencrypted Btrfs system and
+unencrypted swap. The second device contains another Linux installation used
+for physical-hardware distro trials and is intentionally unavailable to this
+NixOS installation. SMART/NVMe monitoring and `nvme-cli` are now declared, but
+activation, device discovery, and notifications have not yet been verified.
+
+#### Assign storage roles before mounting the second device
+
+- [x] Record the current role of the second NVMe: it hosts a separate Linux
+  installation for on-hardware distro testing and must not be repartitioned,
+  reformatted, mounted for routine storage, or enrolled in Btrfs redundancy.
+- [ ] Revisit that role only if the distro-testing workflow is retired.
+
+If that role changes later, do not treat the second internal NVMe as off-site
+backup storage: it shares the workstation's theft, power, user-error, and
+physical-damage risks. Any future move to mirrored storage should likewise be a
+planned migration with degraded-boot and device-replacement procedures, not an
+in-place experiment on the current filesystems.
+
+#### Monitor both the device and filesystem layers
+
+- [x] Enable `services.smartd` with graphical-session notifications.
+- [ ] After activation, verify that smartd discovers both NVMe devices,
+  including the device hosting the separate Linux installation. Explicit stable
+  device paths are preferable if autodetection proves unreliable.
+- [x] Add `nvme-cli` for manual inspection.
+- [ ] Capture an initial health record for each drive: critical warnings,
+  available spare, percentage used, temperature, unsafe shutdowns,
+  media/data-integrity errors, and error-log entries.
+- [ ] Decide whether each model supports useful device self-tests before
+  scheduling them. Stagger any supported extended tests and scrubs so they do
+  not all compete with interactive or render workloads.
+- [ ] Alert on SMART/NVMe critical warnings, rising media errors, depleted
+  spare, excessive temperature, scrub errors, Btrfs device-stat errors, timer
+  failures, and capacity thresholds. Track changes over time rather than only
+  checking whether the overall health status says `PASSED`.
+- [ ] Use an alert path that is both immediate and durable. A desktop
+  notification is useful while logged in, but should be paired with persistent
+  journal visibility, email, or the same external notification mechanism used
+  for backup failures.
+- [ ] Exercise the notification path with a harmless test event, then document
+  the commands for inspecting each drive and the first response to an alert:
+  stop write-heavy work, preserve logs, verify backups, and assess replacement.
+- [ ] Review health and lifetime counters periodically even when no alert has
+  fired, and retain enough history to identify a worsening trend.
 
 Target outcome: degradation is detected early and each storage device has a
-clear, non-conflicting role.
+clear, non-conflicting role. Scrubs, SMART monitoring, alerts, snapshots, and
+backups have each been tested for the distinct failure mode they are intended
+to cover.
 
 ## Phase 3: updates and hardware lifecycle
 

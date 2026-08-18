@@ -77,6 +77,7 @@
       pkgs.bash
       pkgs.bibata-cursors
       pkgs.chromium
+      pkgs.nvme-cli
     ];
   };
 
@@ -151,7 +152,16 @@
       openFirewall = true;
     };
 
+    btrfs.autoScrub = {
+      enable = true;
+      interval = "monthly";
+    };
+
     flatpak.enable = true;
+    fstrim = {
+      enable = true;
+      interval = "weekly";
+    };
     gnome = {
       gnome-keyring.enable = true;
       sushi.enable = true;
@@ -168,6 +178,17 @@
     printing = {
       enable = true;
       browsed.enable = true;
+    };
+
+    smartd = {
+      enable = true;
+      notifications = {
+        # This is a single-user workstation. Forward smartd warnings from the
+        # system bus to the active graphical session instead of relying on an
+        # unread root mailbox or an open terminal.
+        systembus-notify.enable = true;
+        wall.enable = false;
+      };
     };
 
     udisks2.enable = true;
