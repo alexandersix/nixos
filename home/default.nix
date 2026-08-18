@@ -359,7 +359,10 @@ in {
 
   qt = {
     enable = true;
-    platformTheme.name = "qtct";
+    platformTheme = {
+      name = "qt6ct";
+      package = pkgs.qt6Packages.qt6ct;
+    };
 
     qt5ctSettings.Appearance = {
       color_scheme_path = "${config.xdg.configHome}/qt5ct/colors/noctalia.conf";
@@ -374,6 +377,10 @@ in {
       standard_dialogs = "xdgdesktopportal";
       style = "Fusion";
     };
+
+    # Okular otherwise replaces qt6ct's palette with Breeze Light because
+    # KColorSchemeManager cannot infer the dark-mode hint from a custom palette.
+    kde.settings.okularrc.UiSettings.ColorScheme = "NoctaliaQtPalette";
   };
 
   xdg = {
@@ -425,7 +432,7 @@ in {
       text = ''
         env=QML2_IMPORT_PATH,${config.home.profileDirectory}/${pkgs.qt5.qtbase.qtQmlPrefix}:${config.home.profileDirectory}/${pkgs.qt6.qtbase.qtQmlPrefix}
         env=QT_PLUGIN_PATH,${config.home.profileDirectory}/${pkgs.qt5.qtbase.qtPluginPrefix}:${config.home.profileDirectory}/${pkgs.qt6.qtbase.qtPluginPrefix}
-        env=QT_QPA_PLATFORMTHEME,qt5ct
+        env=QT_QPA_PLATFORMTHEME,qt6ct
 
         ${builtins.readFile ./mango/config.conf}
       '';
@@ -760,8 +767,6 @@ in {
             };
 
             bar = let
-              frameThickness = 12;
-              topThickness = 40;
               innerRadius = 16;
               frame = position:
                 {
