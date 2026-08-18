@@ -409,7 +409,38 @@ in {
       defaultApplications = {
         "inode/directory" = ["org.gnome.Nautilus.desktop"];
         "application/pdf" = ["org.kde.okular.desktop"];
+        "application/json" = ["nvim.desktop"];
+        "text/markdown" = ["nvim.desktop"];
+
+        "image/avif" = ["imv.desktop"];
+        "image/bmp" = ["imv.desktop"];
+        "image/gif" = ["imv.desktop"];
+        "image/heif" = ["imv.desktop"];
+        "image/jpeg" = ["imv.desktop"];
+        "image/jxl" = ["imv.desktop"];
+        "image/png" = ["imv.desktop"];
+        "image/tiff" = ["imv.desktop"];
+        "image/webp" = ["imv.desktop"];
+        "image/svg+xml" = ["org.inkscape.Inkscape.desktop"];
+
+        "audio/aac" = ["mpv.desktop"];
+        "audio/flac" = ["mpv.desktop"];
+        "audio/mp4" = ["mpv.desktop"];
+        "audio/mpeg" = ["mpv.desktop"];
+        "audio/ogg" = ["mpv.desktop"];
+        "audio/opus" = ["mpv.desktop"];
+        "audio/wav" = ["mpv.desktop"];
+        "audio/webm" = ["mpv.desktop"];
+        "audio/x-wav" = ["mpv.desktop"];
+
         "video/mp4" = ["mpv.desktop"];
+        "video/mpeg" = ["mpv.desktop"];
+        "video/ogg" = ["mpv.desktop"];
+        "video/quicktime" = ["mpv.desktop"];
+        "video/webm" = ["mpv.desktop"];
+        "video/x-matroska" = ["mpv.desktop"];
+        "video/x-msvideo" = ["mpv.desktop"];
+
         "x-scheme-handler/discord-409416265891971072" = ["discord-409416265891971072.desktop"];
         "x-scheme-handler/mailto" = ["thunderbird.desktop"];
         "x-scheme-handler/tg" = ["org.telegram.desktop.desktop"];
@@ -418,7 +449,39 @@ in {
 
       associations.added = {
         "application/pdf" = ["org.kde.okular.desktop"];
+        "application/json" = ["nvim.desktop"];
+        "text/markdown" = ["nvim.desktop"];
+
+        "image/avif" = ["imv.desktop"];
+        "image/bmp" = ["imv.desktop"];
+        "image/gif" = ["imv.desktop"];
+        "image/heif" = ["imv.desktop"];
+        "image/jpeg" = ["imv.desktop"];
+        "image/jxl" = ["imv.desktop"];
+        "image/png" = ["imv.desktop"];
+        "image/tiff" = ["imv.desktop"];
+        "image/webp" = ["imv.desktop"];
+        "image/svg+xml" = ["org.inkscape.Inkscape.desktop"];
+
+        "audio/aac" = ["mpv.desktop"];
+        "audio/flac" = ["mpv.desktop"];
+        "audio/mp4" = ["mpv.desktop"];
+        "audio/mpeg" = ["mpv.desktop"];
+        "audio/ogg" = ["mpv.desktop"];
+        "audio/opus" = ["mpv.desktop"];
+        "audio/wav" = ["mpv.desktop"];
+        "audio/webm" = ["mpv.desktop"];
+        "audio/x-wav" = ["mpv.desktop"];
+
         "video/mp4" = ["mpv.desktop"];
+        "video/mpeg" = ["mpv.desktop"];
+        "video/ogg" = ["mpv.desktop"];
+        "video/quicktime" = ["mpv.desktop"];
+        "video/webm" = ["mpv.desktop"];
+        "video/x-matroska" = ["mpv.desktop"];
+        "video/x-msvideo" = ["mpv.desktop"];
+
+        "x-scheme-handler/mailto" = ["thunderbird.desktop"];
         "x-scheme-handler/tg" = ["org.telegram.desktop.desktop"];
         "x-scheme-handler/tonsite" = ["org.telegram.desktop.desktop"];
       };
