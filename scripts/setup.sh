@@ -3,7 +3,6 @@
 # that should be prepared on a new machine.
 
 PRIVATE_REPOSITORIES=(
-  "alexandersix/utility-scripts|$HOME/bin"
   "alexandersix/nvim|$HOME/dotfiles/nvim"
   "alexandersix/herdr|$HOME/dotfiles/herdr"
 )

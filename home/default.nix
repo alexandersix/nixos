@@ -6,7 +6,35 @@
   pkgsUnstable,
   username,
   ...
-}: {
+}: let
+  chromiumProfilePicker = pkgs.writeShellApplication {
+    name = "chromium-profile-picker";
+    runtimeInputs = with pkgs; [
+      coreutils
+      gnused
+      jq
+      libnotify
+      util-linux
+      xdg-utils
+    ];
+    text = builtins.readFile ./scripts/chromium-profile-picker.sh;
+  };
+
+  focusUrgent = pkgs.writeShellApplication {
+    name = "focus-urgent";
+    runtimeInputs = [pkgs.jq];
+    text = builtins.readFile ./scripts/focus-urgent.sh;
+  };
+
+  syncNoctaliaConfig = pkgs.writeShellApplication {
+    name = "sync-noctalia-config";
+    runtimeInputs = with pkgs; [
+      coreutils
+      git
+    ];
+    text = builtins.readFile ./scripts/sync-noctalia-config.sh;
+  };
+in {
   imports = [
     inputs.noctalia.homeModules.default
     ./webapps.nix
@@ -18,6 +46,11 @@
     stateVersion = "26.05";
 
     packages = with pkgs; [
+      # Personal utility scripts
+      chromiumProfilePicker
+      focusUrgent
+      syncNoctaliaConfig
+
       # Core command-line tools
       btop
       cava
@@ -136,6 +169,8 @@
     ];
 
     file = {
+      "bin/.keep".text = "";
+
       ".config/rmpc/config.ron".text = ''
         #![enable(implicit_some)]
         #![enable(unwrap_newtypes)]

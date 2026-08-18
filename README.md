@@ -63,7 +63,8 @@ shared flake:
 1. It copies `/etc/nixos/hardware-configuration.nix` into the `desktop` host.
 2. It configures NixOS and Home Manager for the currently logged-in user.
 3. It verifies GitHub CLI authentication and configures Git to use it.
-4. It clones or updates the private repositories listed in `scripts/setup.sh`.
+4. It clones or updates the private application configuration repositories
+   listed in `scripts/setup.sh`.
 5. It creates any optional configuration symlinks listed in the same file,
    without replacing paths that already exist.
 6. It makes every script with a `#!` interpreter line in `~/bin` executable.
@@ -75,7 +76,6 @@ The configured private repositories are:
 
 ```bash
 PRIVATE_REPOSITORIES=(
-  "alexandersix/utility-scripts|$HOME/bin"
   "alexandersix/nvim|$HOME/dotfiles/nvim"
   "alexandersix/herdr|$HOME/dotfiles/herdr"
 )
@@ -135,7 +135,16 @@ in one of the standard locations checked by the script.
 
 Home Manager adds `~/bin` to the session `PATH`. Setup enforces the executable
 bit on every script with a `#!` interpreter line in that directory after
-cloning or updating the utility scripts repository.
+preparing the machine. The directory remains available for experimental and
+machine-local executables that are not ready to become declarative packages.
+
+## Utility commands
+
+Home Manager builds `chromium-profile-picker`, `focus-urgent`, and
+`sync-noctalia-config` from the sources in `home/scripts/`. Their runtime
+dependencies are included in their Nix packages, and Mango calls the first two
+by name. The separate utility-scripts repository is not required on a fresh
+installation.
 
 ## Declarative web apps
 
