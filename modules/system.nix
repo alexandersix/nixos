@@ -112,6 +112,10 @@
     ];
   };
 
+  # Keep a second rendering engine available for compatibility and recovery.
+  # Chromium remains the primary browser used by Mango and the web-app module.
+  programs.firefox.enable = true;
+
   programs = {
     _1password.enable = true;
     _1password-gui = {
