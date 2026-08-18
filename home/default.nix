@@ -82,6 +82,7 @@ in {
       file-roller
       nautilus
       kdePackages.okular
+      obsidian
       wl-clipboard
 
       # Content creation, media, graphics, and audio

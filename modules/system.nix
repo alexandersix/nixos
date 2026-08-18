@@ -9,6 +9,7 @@
       "1password-cli"
       "davinci-resolve-studio"
       "discord"
+      "obsidian"
       "reaper"
       "steam"
       "steam-unwrapped"
