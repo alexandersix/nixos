@@ -343,18 +343,33 @@ not enabled because it would duplicate Noctalia's pairing interface, but
 
 ### Network integrations
 
+Current state: the Tailscale daemon and CLI are declared, with its UDP listen
+port allowed through the firewall for direct peer connections. Enrollment is
+intentionally interactive so that no reusable tailnet credential is stored in
+the repository. Tailscale SSH can provide remote shell access without exposing
+the system OpenSSH service to the LAN or public interfaces; tailnet ACLs and
+device approval remain external policy that must be verified after enrollment.
+
 - [ ] Add an OpenVPN NetworkManager plugin if OpenVPN profiles are needed.
-- [ ] Add Tailscale or another mesh VPN only if remote access is needed.
-- [ ] Enable SSH server access only for a concrete use case, with firewall and
-  authentication settings scoped accordingly.
+- [x] Add Tailscale for remote access from the laptop.
+- [x] Use Tailscale SSH for the concrete remote-shell use case rather than
+  opening the system SSH service more broadly.
+- [ ] After activation, enroll with `sudo tailscale up`, approve the device if
+  the tailnet requires it, enable remote shell access once with
+  `sudo tailscale set --ssh`, and verify `ssh alexandersix@desktop` from the
+  laptop while it is away from the workstation's LAN.
+- [ ] Review the tailnet's SSH ACL before relying on remote access, and confirm
+  that the laptop user is allowed to reach only the intended account.
 - [ ] Add Samba/NFS clients, shares, or network discovery only if used.
 - [ ] Decide whether LocalSend is sufficient for nearby file transfer.
 
 ### Browser redundancy
 
-Current state: Chromium is the only conventional browser.
+Current state: Chromium remains the primary browser used by Mango keybindings,
+the profile picker, and declarative web apps. Firefox is also installed through
+the NixOS browser module as an alternate rendering engine and recovery browser.
 
-- [ ] Consider installing Firefox as an alternate rendering engine and
+- [x] Install Firefox as an alternate rendering engine and
   recovery browser.
 - [ ] Decide whether browser profiles, bookmarks, and essential extension
   settings require backup or declarative management.
@@ -363,10 +378,17 @@ Current state: Chromium is the only conventional browser.
 
 ### Fonts and typography
 
-Current state: the configured fonts are primarily Inter and terminal-focused
-Nerd Font families.
+Current state: an audit found that NixOS's implicit default font packages were
+already supplying DejaVu, GNU FreeFont, TeX Gyre, Liberation, Unifont, Noto CJK,
+and Noto Color Emoji alongside the explicitly configured Inter and terminal
+families. That useful baseline is now declared explicitly so it does not drift
+with nixpkgs defaults. Core Noto sans/serif families add broad Unicode coverage,
+while Carlito and Caladea reduce layout changes in documents designed around
+Calibri and Cambria. Fontconfig explicitly prefers Inter for sans-serif text,
+Noto Serif for serif text, Iosevka Fixed for monospace text, and Noto Color Emoji
+for emoji. Application-specific creative font choices remain separate.
 
-- [ ] Add broad document and Unicode coverage, potentially including Noto,
+- [x] Add broad document and Unicode coverage, including Noto,
   Noto CJK, Noto Color Emoji, and Liberation fonts.
 - [ ] Decide which licensed creative fonts require separate installation and
   backup.
@@ -403,7 +425,10 @@ These are policy decisions rather than universal workstation requirements.
 - [ ] Evaluate Secure Boot through Lanzaboote.
 - [ ] Evaluate AppArmor against compatibility with creative and development
   applications.
-- [ ] Consider using the 1Password SSH agent.
+- [x] Configure the 1Password SSH agent socket for shells and Mango-launched
+  applications. Enabling the agent itself remains a one-time, per-account
+  action in the 1Password desktop app; its mutable settings file is not managed
+  declaratively.
 - [ ] Consider signed Git commits or tags.
 - [ ] Decide whether hibernation is required and configure encrypted resume if
   so.

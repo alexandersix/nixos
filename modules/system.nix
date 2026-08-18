@@ -99,6 +99,9 @@
       pkgs.bash
       pkgs.bibata-cursors
       pkgs.chromium
+      # Interpret capabilities advertised by Ghostty clients over SSH without
+      # installing Ghostty itself on this workstation.
+      pkgs.ghostty.terminfo
       pkgs.nvme-cli
     ];
   };
@@ -215,6 +218,13 @@
         systembus-notify.enable = true;
         wall.enable = false;
       };
+    };
+
+    # The daemon and CLI are installed here; joining the tailnet remains an
+    # intentional one-time interactive step because no auth key is committed.
+    tailscale = {
+      enable = true;
+      openFirewall = true;
     };
 
     udisks2.enable = true;
