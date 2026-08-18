@@ -75,6 +75,7 @@ in {
       rclone
       restic
       telegram-desktop
+      thunderbird
       zoom-us
 
       # Desktop utilities
@@ -410,6 +411,7 @@ in {
         "application/pdf" = ["org.kde.okular.desktop"];
         "video/mp4" = ["mpv.desktop"];
         "x-scheme-handler/discord-409416265891971072" = ["discord-409416265891971072.desktop"];
+        "x-scheme-handler/mailto" = ["thunderbird.desktop"];
         "x-scheme-handler/tg" = ["org.telegram.desktop.desktop"];
         "x-scheme-handler/tonsite" = ["org.telegram.desktop.desktop"];
       };
