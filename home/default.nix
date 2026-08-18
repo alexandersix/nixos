@@ -26,6 +26,12 @@
     text = builtins.readFile ./scripts/focus-urgent.sh;
   };
 
+  mangoLayoutPicker = pkgs.writeShellApplication {
+    name = "mango-layout-picker";
+    runtimeInputs = [pkgs.libnotify];
+    text = builtins.readFile ./scripts/mango-layout-picker.sh;
+  };
+
   syncNoctaliaConfig = pkgs.writeShellApplication {
     name = "sync-noctalia-config";
     runtimeInputs = with pkgs; [
@@ -49,6 +55,7 @@ in {
       # Personal utility scripts
       chromiumProfilePicker
       focusUrgent
+      mangoLayoutPicker
       syncNoctaliaConfig
 
       # Core command-line tools
