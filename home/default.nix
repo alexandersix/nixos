@@ -7,6 +7,8 @@
   username,
   ...
 }: let
+  onePasswordSshAgentSocket = "${config.home.homeDirectory}/.1password/agent.sock";
+
   chromiumProfilePicker = pkgs.writeShellApplication {
     name = "chromium-profile-picker";
     runtimeInputs = with pkgs; [
@@ -328,6 +330,9 @@ in {
 
     sessionVariables = {
       EDITOR = "nvim";
+      # 1Password creates this socket after its SSH agent is enabled in the
+      # desktop app. Declaring it here makes CLI Git and SSH use that agent.
+      SSH_AUTH_SOCK = onePasswordSshAgentSocket;
       VISUAL = "nvim";
     };
   };
@@ -393,6 +398,10 @@ in {
         env=QML2_IMPORT_PATH,${config.home.profileDirectory}/${pkgs.qt5.qtbase.qtQmlPrefix}:${config.home.profileDirectory}/${pkgs.qt6.qtbase.qtQmlPrefix}
         env=QT_PLUGIN_PATH,${config.home.profileDirectory}/${pkgs.qt5.qtbase.qtPluginPrefix}:${config.home.profileDirectory}/${pkgs.qt6.qtbase.qtPluginPrefix}
         env=QT_QPA_PLATFORMTHEME,qt6ct
+        # Mango does not source Home Manager's shell session variables. Export
+        # the agent socket to compositor children and the systemd user import
+        # performed by autostart.sh.
+        env=SSH_AUTH_SOCK,${onePasswordSshAgentSocket}
 
         ${builtins.readFile ./mango/config.conf}
       '';
