@@ -341,6 +341,11 @@ in {
       source = ./alacritty/alacritty.toml;
     };
 
+    configFile."herdr/config.toml" = {
+      force = true;
+      source = ./herdr/config.toml;
+    };
+
     configFile."mango/application-rules.conf" = {
       force = true;
       source = ./mango/application-rules.conf;

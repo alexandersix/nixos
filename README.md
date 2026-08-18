@@ -77,24 +77,29 @@ The configured private repositories are:
 ```bash
 PRIVATE_REPOSITORIES=(
   "alexandersix/nvim|$HOME/dotfiles/nvim"
-  "alexandersix/herdr|$HOME/dotfiles/herdr"
 )
 ```
 
-`nvim` and `herdr` use separate directories beneath `~/dotfiles`
-because Git repositories cannot share the same checkout root. Setup links
-them into the locations their applications expect:
+The Neovim checkout lives beneath `~/dotfiles`, and setup links it into the
+location Neovim expects:
 
 ```bash
 CONFIG_LINKS=(
   "$HOME/dotfiles/nvim|$HOME/.config/nvim"
-  "$HOME/dotfiles/herdr|$HOME/.config/herdr"
 )
 ```
 
 Home Manager installs the Neovim executable and provides `vi`/`vim` aliases,
 but does not manage its configuration. The private `alexandersix/nvim`
 checkout is the sole source for `~/.config/nvim`.
+
+## Herdr configuration
+
+Home Manager owns Herdr's portable `config.toml` from `home/herdr/config.toml`.
+The rest of `~/.config/herdr` remains writable so Herdr can maintain its plugin
+lock, release-note state, sessions, sockets, and logs alongside the managed
+configuration. The TOML snapshot contains no Nix-specific syntax and can also
+be linked directly on non-NixOS systems.
 
 ## Mango configuration
 
@@ -140,11 +145,11 @@ machine-local executables that are not ready to become declarative packages.
 
 ## Utility commands
 
-Home Manager builds `chromium-profile-picker`, `focus-urgent`, and
-`sync-noctalia-config` from the sources in `home/scripts/`. Their runtime
-dependencies are included in their Nix packages, and Mango calls the first two
-by name. The separate utility-scripts repository is not required on a fresh
-installation.
+Home Manager builds `chromium-profile-picker`, `focus-urgent`,
+`mango-layout-picker`, and `sync-noctalia-config` from the sources in
+`home/scripts/`. Their runtime dependencies are included in their Nix packages,
+and Mango calls the first three by name. The separate utility-scripts repository
+is not required on a fresh installation.
 
 ## Declarative web apps
 

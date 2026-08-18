@@ -1,0 +1,44 @@
+onboarding = false
+[keys]
+# Rename the current tab with Prefix+,.
+rename_tab = "prefix+,"
+
+# Create a left-right split with Prefix+| or Prefix+\.
+split_vertical = ["prefix+|", "prefix+backslash"]
+
+# Use Vim-style vertical movement in Herdr's navigate/sidebar mode.
+navigate_workspace_up = ["up", "k"]
+navigate_workspace_down = ["down", "j"]
+
+# Pane movement remains available through Prefix+j/k outside Navigate mode.
+navigate_pane_up = ""
+navigate_pane_down = ""
+
+[theme]
+# Everforest palette from ~/.config/ghostty/config.
+name = "terminal"
+auto_switch = false
+
+[theme.custom]
+accent = "#a7c080"
+panel_bg = "#333c43"
+surface0 = "#3c474d"
+surface1 = "#505a60"
+surface_dim = "#2d353b"
+overlay0 = "#505a60"
+overlay1 = "#868d80"
+text = "#d8caac"
+subtext0 = "#868d80"
+mauve = "#d39bb6"
+green = "#a7c080"
+yellow = "#d9bb80"
+red = "#e68183"
+blue = "#83b6af"
+teal = "#87c095"
+peach = "#d9bb80"
+
+[ui.toast]
+delivery = "system"
+
+[ui]
+show_agent_labels_on_pane_borders = true

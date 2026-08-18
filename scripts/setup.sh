@@ -4,12 +4,10 @@
 
 PRIVATE_REPOSITORIES=(
   "alexandersix/nvim|$HOME/dotfiles/nvim"
-  "alexandersix/herdr|$HOME/dotfiles/herdr"
 )
 
 CONFIG_LINKS=(
   "$HOME/dotfiles/nvim|$HOME/.config/nvim"
-  "$HOME/dotfiles/herdr|$HOME/.config/herdr"
 )
 
 EXECUTABLE_DIRECTORIES=(
