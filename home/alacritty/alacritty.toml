@@ -1,0 +1,12 @@
+[general]
+import = [
+    "~/.config/alacritty/themes/noctalia.toml"
+]
+
+[window]
+padding = { x = 10, y = 10 }
+opacity = 0.8
+blur = true
+
+[font]
+normal = { family = "Iosevka Fixed" }

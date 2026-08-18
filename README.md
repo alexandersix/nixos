@@ -101,6 +101,19 @@ checkout is the sole source for `~/.config/nvim`.
 The `alexandersix/mango` checkout is likewise the sole source for
 `~/.config/mango`; Home Manager installs no files in that directory.
 
+## Alacritty configuration
+
+Home Manager installs the checkpointed base configuration from
+`home/alacritty/alacritty.toml`. It owns `~/.config/alacritty/alacritty.toml`,
+so changes to the base configuration should be copied back into this repository
+before rebuilding.
+
+The imported `themes/noctalia.toml` file remains writable because Noctalia
+regenerates it when the desktop theme changes. On a fresh install, Home Manager
+seeds that file from `home/alacritty/themes/noctalia.toml`; afterward Noctalia
+owns it. This provides the current colors before the first template refresh
+without preventing future theme changes.
+
 ## Saving Noctalia UI changes
 
 Noctalia writes Settings UI changes to its state directory. To promote the

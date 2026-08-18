@@ -294,6 +294,11 @@
   };
 
   xdg = {
+    configFile."alacritty/alacritty.toml" = {
+      force = true;
+      source = ./alacritty/alacritty.toml;
+    };
+
     configFile."mimeapps.list".force = true;
 
     userDirs = {
@@ -325,6 +330,19 @@
       };
     };
   };
+
+  # Seed the checkpointed colors on a fresh install. Noctalia owns this
+  # generated file afterward so theme changes can continue updating it.
+  home.activation.seedAlacrittyTheme = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    alacritty_theme_dir="${config.xdg.configHome}/alacritty/themes"
+    alacritty_theme_file="$alacritty_theme_dir/noctalia.toml"
+
+    if [[ ! -e "$alacritty_theme_file" ]]; then
+      $DRY_RUN_CMD ${pkgs.coreutils}/bin/mkdir -p "$alacritty_theme_dir"
+      $DRY_RUN_CMD ${pkgs.coreutils}/bin/install -m 0644 \
+        ${./alacritty/themes/noctalia.toml} "$alacritty_theme_file"
+    fi
+  '';
 
   services = {
     mpd = {
