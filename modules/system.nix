@@ -139,11 +139,18 @@
     };
     steam.enable = true;
     streamcontroller.enable = true;
+    system-config-printer.enable = true;
     virt-manager.enable = true;
     wireshark.enable = true;
   };
 
   services = {
+    avahi = {
+      enable = true;
+      nssmdns4 = true;
+      openFirewall = true;
+    };
+
     flatpak.enable = true;
     gnome = {
       gnome-keyring.enable = true;
@@ -156,6 +163,11 @@
       alsa.enable = true;
       pulse.enable = true;
       jack.enable = true;
+    };
+
+    printing = {
+      enable = true;
+      browsed.enable = true;
     };
 
     udisks2.enable = true;

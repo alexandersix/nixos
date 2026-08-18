@@ -182,10 +182,17 @@ These should be implemented only when they match real hardware or usage.
 
 ### Printing and scanning
 
-- [ ] If needed, enable CUPS and driverless printing.
-- [ ] Enable Avahi/mDNS discovery for network printers and scanners.
+Current state: CUPS, `cups-browsed`, Avahi/mDNS discovery, and
+`system-config-printer` are enabled for driverless Wi-Fi printing to a Brother
+HL-L2460DW. The configuration builds successfully without a vendor driver.
+Scanning and USB printing remain disabled because this printer does not need
+them.
+
+- [x] Enable CUPS and driverless printing.
+- [x] Enable Avahi/mDNS discovery for network printers.
 - [ ] Enable SANE and install a scanning application such as Document Scanner.
-- [ ] Test printing and scanning from both GTK and Qt applications.
+- [ ] Test printing from both GTK and Qt applications.
+- [ ] If scanning is added later, test it from the chosen scanning application.
 
 ### Bluetooth
 
