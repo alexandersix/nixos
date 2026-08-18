@@ -81,6 +81,7 @@ in {
       # Desktop utilities
       alacritty
       file-roller
+      imv
       nautilus
       kdePackages.okular
       obsidian
@@ -97,7 +98,6 @@ in {
       easyeffects
       ffmpeg-full
       fontforge-gtk
-      geeqie
       gimp-with-plugins
       handbrake
       imagemagick
