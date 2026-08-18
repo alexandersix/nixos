@@ -196,14 +196,25 @@ them.
 
 ### Bluetooth
 
-Current state: Noctalia displays a Bluetooth widget, but this repository does
-not explicitly enable the NixOS Bluetooth stack or a pairing manager.
+Current state: the host exposes an unblocked Bluetooth controller using the
+kernel `btusb` driver. BlueZ is explicitly enabled and powers the controller on
+at boot. Noctalia provides the Bluetooth widget, device management, and pairing
+agent; PipeWire and WirePlumber provide Bluetooth audio integration. Blueman is
+not enabled because it would duplicate Noctalia's pairing interface, but
+`bluetoothctl` remains available as a diagnostic fallback.
 
-- [ ] If the host has Bluetooth, enable `hardware.bluetooth`.
-- [ ] Choose a pairing interface, such as Blueman or the Noctalia-provided
-  interface if it supplies all required functionality.
-- [ ] Test headset profiles, controllers, reconnect behavior, and microphone
-  selection.
+- [x] Enable `hardware.bluetooth` explicitly rather than relying on Noctalia's
+  recommended-services default.
+- [x] Use Noctalia as the primary pairing and device-management interface.
+- [ ] Pair an audio device and test high-quality stereo playback, the headset
+  microphone profile, application input/output selection, and switching back
+  to the stereo profile.
+- [ ] Test trusted-device reconnection after a reboot, suspend/resume, and
+  cycling Bluetooth power.
+- [ ] Pair any controllers or input devices that will actually be used and test
+  buttons, analog inputs, vibration, battery reporting, and reconnect behavior.
+- [ ] Add Blueman or device-specific BlueZ/WirePlumber settings only if testing
+  exposes functionality that Noctalia and the defaults do not provide.
 
 ### Network integrations
 

@@ -175,6 +175,12 @@
 
   security.rtkit.enable = true;
 
+  # BlueZ is a system capability; Noctalia provides the pairing interface.
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = true;
+  };
+
   # Mouseless uses uinput to provide global mouse control on Wayland.
   hardware.uinput.enable = true;
 
