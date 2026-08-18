@@ -111,6 +111,7 @@ in {
       mediainfo
       mpvpaper
       pandoc
+      poppler-utils
       qpwgraph
       reaper
       rmpc
