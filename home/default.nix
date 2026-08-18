@@ -81,6 +81,7 @@ in {
       alacritty
       file-roller
       nautilus
+      kdePackages.okular
       wl-clipboard
 
       # Content creation, media, graphics, and audio
@@ -380,6 +381,7 @@ in {
 
       defaultApplications = {
         "inode/directory" = ["org.gnome.Nautilus.desktop"];
+        "application/pdf" = ["org.kde.okular.desktop"];
         "video/mp4" = ["mpv.desktop"];
         "x-scheme-handler/discord-409416265891971072" = ["discord-409416265891971072.desktop"];
         "x-scheme-handler/tg" = ["org.telegram.desktop.desktop"];
@@ -387,6 +389,7 @@ in {
       };
 
       associations.added = {
+        "application/pdf" = ["org.kde.okular.desktop"];
         "video/mp4" = ["mpv.desktop"];
         "x-scheme-handler/tg" = ["org.telegram.desktop.desktop"];
         "x-scheme-handler/tonsite" = ["org.telegram.desktop.desktop"];
