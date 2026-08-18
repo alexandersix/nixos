@@ -49,8 +49,25 @@
   i18n.defaultLocale = "en_US.UTF-8";
 
   fonts = {
+    # Keep the workstation's document and Unicode baseline explicit rather than
+    # inheriting a nixpkgs default package list that may change between releases.
+    enableDefaultPackages = false;
     packages = [
+      # General UI and document families.
+      pkgs.caladea
+      pkgs.carlito
+      pkgs.dejavu_fonts
+      pkgs.freefont_ttf
+      pkgs.gyre-fonts
       pkgs.inter
+      pkgs.liberation_ttf
+      pkgs.noto-fonts
+      pkgs.noto-fonts-cjk-sans
+      pkgs.noto-fonts-cjk-serif
+      pkgs.noto-fonts-color-emoji
+      pkgs.unifont
+
+      # Developer and terminal families.
       (pkgs.iosevka-bin.override {variant = "SGr-IosevkaFixed";})
       pkgs.nerd-fonts.blex-mono
       pkgs.nerd-fonts.gohufont
@@ -61,7 +78,12 @@
       pkgs.nerd-fonts.terminess-ttf
       pkgs.nerd-fonts.zed-mono
     ];
-    fontconfig.defaultFonts.sansSerif = ["Inter"];
+    fontconfig.defaultFonts = {
+      sansSerif = ["Inter" "Noto Sans" "Carlito" "Liberation Sans"];
+      serif = ["Noto Serif" "Caladea" "Liberation Serif"];
+      monospace = ["Iosevka Fixed" "Noto Sans Mono" "Liberation Mono"];
+      emoji = ["Noto Color Emoji"];
+    };
   };
 
   xdg.portal.wlr.settings.screencast = {
