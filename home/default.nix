@@ -7,6 +7,9 @@
   username,
   ...
 }: let
+  frameThickness = 12;
+  topThickness = 40;
+
   chromiumProfilePicker = pkgs.writeShellApplication {
     name = "chromium-profile-picker";
     runtimeInputs = with pkgs; [
@@ -24,6 +27,21 @@
     name = "focus-urgent";
     runtimeInputs = [pkgs.jq];
     text = builtins.readFile ./scripts/focus-urgent.sh;
+  };
+
+  imvSized = pkgs.writeShellApplication {
+    name = "imv-sized";
+    runtimeInputs = with pkgs; [
+      coreutils
+      imagemagick
+      imv
+      jq
+    ];
+    runtimeEnv = {
+      IMV_RESERVED_HEIGHT = toString (topThickness + frameThickness);
+      IMV_RESERVED_WIDTH = toString (2 * frameThickness);
+    };
+    text = builtins.readFile ./scripts/imv-sized.sh;
   };
 
   mangoLayoutPicker = pkgs.writeShellApplication {
@@ -55,6 +73,7 @@ in {
       # Personal utility scripts
       chromiumProfilePicker
       focusUrgent
+      imvSized
       mangoLayoutPicker
       syncNoctaliaConfig
 
@@ -358,6 +377,28 @@ in {
   };
 
   xdg = {
+    desktopEntries.imv-sized = {
+      name = "imv";
+      genericName = "Image Viewer";
+      comment = "View images at native size or scaled to fit the viewport";
+      exec = "${lib.getExe imvSized} %F";
+      icon = "imv";
+      terminal = false;
+      noDisplay = true;
+      categories = ["Graphics" "Viewer"];
+      mimeType = [
+        "image/avif"
+        "image/bmp"
+        "image/gif"
+        "image/heif"
+        "image/jpeg"
+        "image/jxl"
+        "image/png"
+        "image/tiff"
+        "image/webp"
+      ];
+    };
+
     configFile."alacritty/alacritty.toml" = {
       force = true;
       source = ./alacritty/alacritty.toml;
@@ -412,15 +453,15 @@ in {
         "application/json" = ["nvim.desktop"];
         "text/markdown" = ["nvim.desktop"];
 
-        "image/avif" = ["imv.desktop"];
-        "image/bmp" = ["imv.desktop"];
-        "image/gif" = ["imv.desktop"];
-        "image/heif" = ["imv.desktop"];
-        "image/jpeg" = ["imv.desktop"];
-        "image/jxl" = ["imv.desktop"];
-        "image/png" = ["imv.desktop"];
-        "image/tiff" = ["imv.desktop"];
-        "image/webp" = ["imv.desktop"];
+        "image/avif" = ["imv-sized.desktop"];
+        "image/bmp" = ["imv-sized.desktop"];
+        "image/gif" = ["imv-sized.desktop"];
+        "image/heif" = ["imv-sized.desktop"];
+        "image/jpeg" = ["imv-sized.desktop"];
+        "image/jxl" = ["imv-sized.desktop"];
+        "image/png" = ["imv-sized.desktop"];
+        "image/tiff" = ["imv-sized.desktop"];
+        "image/webp" = ["imv-sized.desktop"];
         "image/svg+xml" = ["org.inkscape.Inkscape.desktop"];
 
         "audio/aac" = ["mpv.desktop"];
@@ -452,15 +493,15 @@ in {
         "application/json" = ["nvim.desktop"];
         "text/markdown" = ["nvim.desktop"];
 
-        "image/avif" = ["imv.desktop"];
-        "image/bmp" = ["imv.desktop"];
-        "image/gif" = ["imv.desktop"];
-        "image/heif" = ["imv.desktop"];
-        "image/jpeg" = ["imv.desktop"];
-        "image/jxl" = ["imv.desktop"];
-        "image/png" = ["imv.desktop"];
-        "image/tiff" = ["imv.desktop"];
-        "image/webp" = ["imv.desktop"];
+        "image/avif" = ["imv-sized.desktop"];
+        "image/bmp" = ["imv-sized.desktop"];
+        "image/gif" = ["imv-sized.desktop"];
+        "image/heif" = ["imv-sized.desktop"];
+        "image/jpeg" = ["imv-sized.desktop"];
+        "image/jxl" = ["imv-sized.desktop"];
+        "image/png" = ["imv-sized.desktop"];
+        "image/tiff" = ["imv-sized.desktop"];
+        "image/webp" = ["imv-sized.desktop"];
         "image/svg+xml" = ["org.inkscape.Inkscape.desktop"];
 
         "audio/aac" = ["mpv.desktop"];
