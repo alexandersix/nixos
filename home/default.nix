@@ -299,6 +299,22 @@
       source = ./alacritty/alacritty.toml;
     };
 
+    configFile."mango/application-rules.conf" = {
+      force = true;
+      source = ./mango/application-rules.conf;
+    };
+
+    configFile."mango/autostart.sh" = {
+      executable = true;
+      force = true;
+      source = ./mango/autostart.sh;
+    };
+
+    configFile."mango/config.conf" = {
+      force = true;
+      source = ./mango/config.conf;
+    };
+
     configFile."mimeapps.list".force = true;
 
     userDirs = {
@@ -331,17 +347,30 @@
     };
   };
 
-  # Seed the checkpointed colors on a fresh install. Noctalia owns this
-  # generated file afterward so theme changes can continue updating it.
-  home.activation.seedAlacrittyTheme = lib.hm.dag.entryAfter ["writeBoundary"] ''
-    alacritty_theme_dir="${config.xdg.configHome}/alacritty/themes"
-    alacritty_theme_file="$alacritty_theme_dir/noctalia.toml"
+  # Seed checkpointed generated files on a fresh install, then leave them
+  # writable so Noctalia can continue updating them when the theme changes.
+  home.activation.seedWritableConfigs = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    seed_writable_config() {
+      source_file="$1"
+      target_dir="$2"
+      target_file="$3"
 
-    if [[ ! -e "$alacritty_theme_file" ]]; then
-      $DRY_RUN_CMD ${pkgs.coreutils}/bin/mkdir -p "$alacritty_theme_dir"
-      $DRY_RUN_CMD ${pkgs.coreutils}/bin/install -m 0644 \
-        ${./alacritty/themes/noctalia.toml} "$alacritty_theme_file"
-    fi
+      if [[ ! -e "$target_dir/$target_file" ]]; then
+        $DRY_RUN_CMD ${pkgs.coreutils}/bin/mkdir -p "$target_dir"
+        $DRY_RUN_CMD ${pkgs.coreutils}/bin/install -m 0644 \
+          "$source_file" "$target_dir/$target_file"
+      fi
+    }
+
+    seed_writable_config \
+      ${./alacritty/themes/noctalia.toml} \
+      "${config.xdg.configHome}/alacritty/themes" \
+      noctalia.toml
+
+    seed_writable_config \
+      ${./mango/noctalia.conf} \
+      "${config.xdg.configHome}/mango" \
+      noctalia.conf
   '';
 
   services = {

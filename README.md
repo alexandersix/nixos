@@ -78,11 +78,10 @@ PRIVATE_REPOSITORIES=(
   "alexandersix/utility-scripts|$HOME/bin"
   "alexandersix/nvim|$HOME/dotfiles/nvim"
   "alexandersix/herdr|$HOME/dotfiles/herdr"
-  "alexandersix/mango|$HOME/dotfiles/mango"
 )
 ```
 
-`nvim`, `herdr`, and `mango` use separate directories beneath `~/dotfiles`
+`nvim` and `herdr` use separate directories beneath `~/dotfiles`
 because Git repositories cannot share the same checkout root. Setup links
 them into the locations their applications expect:
 
@@ -90,7 +89,6 @@ them into the locations their applications expect:
 CONFIG_LINKS=(
   "$HOME/dotfiles/nvim|$HOME/.config/nvim"
   "$HOME/dotfiles/herdr|$HOME/.config/herdr"
-  "$HOME/dotfiles/mango|$HOME/.config/mango"
 )
 ```
 
@@ -98,8 +96,14 @@ Home Manager installs the Neovim executable and provides `vi`/`vim` aliases,
 but does not manage its configuration. The private `alexandersix/nvim`
 checkout is the sole source for `~/.config/nvim`.
 
-The `alexandersix/mango` checkout is likewise the sole source for
-`~/.config/mango`; Home Manager installs no files in that directory.
+## Mango configuration
+
+Home Manager owns Mango's stable `config.conf`, `application-rules.conf`, and
+`autostart.sh` files from `home/mango/`. The generated `noctalia.conf` remains
+writable because Noctalia regenerates it whenever the desktop theme changes.
+On a fresh install, Home Manager seeds it from `home/mango/noctalia.conf`, then
+leaves it under Noctalia's ownership. This gives Mango the checkpointed colors
+before the first template refresh without resetting later theme changes.
 
 ## Alacritty configuration
 
