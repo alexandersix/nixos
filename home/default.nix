@@ -337,6 +337,25 @@ in {
     gtk4.extraConfig.gtk-application-prefer-dark-theme = 1;
   };
 
+  qt = {
+    enable = true;
+    platformTheme.name = "qtct";
+
+    qt5ctSettings.Appearance = {
+      color_scheme_path = "${config.xdg.configHome}/qt5ct/colors/noctalia.conf";
+      custom_palette = true;
+      standard_dialogs = "xdgdesktopportal";
+      style = "Fusion";
+    };
+
+    qt6ctSettings.Appearance = {
+      color_scheme_path = "${config.xdg.configHome}/qt6ct/colors/noctalia.conf";
+      custom_palette = true;
+      standard_dialogs = "xdgdesktopportal";
+      style = "Fusion";
+    };
+  };
+
   xdg = {
     configFile."alacritty/alacritty.toml" = {
       force = true;
@@ -361,7 +380,13 @@ in {
 
     configFile."mango/config.conf" = {
       force = true;
-      source = ./mango/config.conf;
+      text = ''
+        env=QML2_IMPORT_PATH,${config.home.profileDirectory}/${pkgs.qt5.qtbase.qtQmlPrefix}:${config.home.profileDirectory}/${pkgs.qt6.qtbase.qtQmlPrefix}
+        env=QT_PLUGIN_PATH,${config.home.profileDirectory}/${pkgs.qt5.qtbase.qtPluginPrefix}:${config.home.profileDirectory}/${pkgs.qt6.qtbase.qtPluginPrefix}
+        env=QT_QPA_PLATFORMTHEME,qt5ct
+
+        ${builtins.readFile ./mango/config.conf}
+      '';
     };
 
     configFile."mimeapps.list".force = true;
