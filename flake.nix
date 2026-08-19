@@ -44,7 +44,6 @@
           "1password-cli"
           "davinci-resolve-studio"
           "discord"
-          "reaper"
           "steam"
           "steam-unwrapped"
           "zoom"

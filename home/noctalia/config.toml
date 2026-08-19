@@ -161,7 +161,7 @@ source = "community"
 wallpaper_scheme = "m3-content"
 
     [theme.templates]
-    builtin_ids = [ "alacritty", "foot", "gtk3", "gtk4", "ghostty", "mango", "qt", "starship" ]
+    builtin_ids = [ "alacritty", "gtk3", "gtk4", "ghostty", "mango", "qt", "starship" ]
     community_ids = [
         "opencode",
         "pi-agent",

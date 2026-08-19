@@ -81,6 +81,7 @@ in {
       zoom-us
 
       # Desktop utilities
+      adwaita-icon-theme
       alacritty
       file-roller
       imv
@@ -96,7 +97,6 @@ in {
       calf
       darktable
       davinci-resolve-studio
-      digikam
       easyeffects
       ffmpeg-full
       fontforge-gtk
@@ -108,14 +108,12 @@ in {
       krita
       krita-plugin-gmic
       libreoffice
-      losslesscut
       lsp-plugins
       mediainfo
       mpvpaper
       pandoc
       poppler-utils
       qpwgraph
-      reaper
       rmpc
       scribus
       synfigstudio
@@ -129,7 +127,6 @@ in {
       beekeeper-studio
       bruno
       pkgsUnstable.codex
-      dbeaver-bin
       deadnix
       devenv
       docker-buildx
@@ -146,7 +143,6 @@ in {
       mitmproxy
       mkcert
       nh
-      nix-output-monitor
       nixd
       neovim
       nurl
@@ -177,7 +173,6 @@ in {
       obs-cli
       pavucontrol
       playerctl
-      radeontop
       vulkan-tools
     ];
 
@@ -265,7 +260,7 @@ in {
       ".local/share/noctalia/plugins/mango-layout/plugin.toml".text = ''
         id = "alexandersix/mango-layout"
         name = "Mango Layout"
-        version = "1.0.0"
+        version = "1.3.0"
         min_noctalia = "5.0.0"
         plugin_api = 3
         author = "Alexander Six"
@@ -279,42 +274,76 @@ in {
       '';
 
       ".local/share/noctalia/plugins/mango-layout/main.luau".text = ''
-        local layoutNames = {
-          T = "Tile",
-          S = "Scroller",
-          G = "Grid",
-          M = "Monocle",
-          K = "Deck",
-          CT = "Center Tile",
-          RT = "Right Tile",
-          VS = "Vertical Scroller",
-          VT = "Vertical Tile",
-          VG = "Vertical Grid",
-          VK = "Vertical Deck",
-          DW = "Dwindle",
-          F = "Fair",
-          VF = "Vertical Fair",
+        -- Symbols follow the compact style used by dwm. Where dwm has no
+        -- equivalent layout, the symbol is a small diagram of Mango's layout.
+        local layouts = {
+          T = { name = "Tile", symbol = "[]=" },
+          S = { name = "Scroller", symbol = "<[]>" },
+          G = { name = "Grid", symbol = "###" },
+          M = { name = "Monocle", symbol = "[M]" },
+          K = { name = "Deck", symbol = "[D]" },
+          CT = { name = "Center Tile", symbol = "|M|" },
+          RT = { name = "Right Tile", symbol = "=[]" },
+          VS = { name = "Vertical Scroller", symbol = "[^v]" },
+          VT = { name = "Vertical Tile", symbol = "TTT" },
+          VG = { name = "Vertical Grid", symbol = "===" },
+          VK = { name = "Vertical Deck", symbol = "-D-" },
+          DW = { name = "Dwindle", symbol = "[\\]" },
+          F = { name = "Fair", symbol = ":::" },
+          VF = { name = "Vertical Fair", symbol = "---" },
         }
 
+        local function label(text, key)
+          return {
+            type = "label",
+            key = key,
+            props = {
+              text = text,
+              baseline = "inkCentered",
+            },
+          }
+        end
+
+        local function showText(text)
+          barWidget.render(label(text, "status"))
+        end
+
         local function showLayout(symbol)
-          local name = layoutNames[symbol] or symbol
-          barWidget.setText(name)
+          local layout = layouts[symbol]
+          local name = layout and layout.name or symbol
+
+          if layout then
+            barWidget.render({
+              type = "row",
+              props = {
+                align = "center",
+                gap = 6,
+              },
+              children = {
+                label(layout.symbol, "symbol"),
+                label(name, "name"),
+              },
+            })
+          else
+            showText(symbol)
+          end
+
           barWidget.setTooltip("Mango layout: " .. name)
         end
 
-        barWidget.setText("Layout")
+        showText("Layout")
         barWidget.setTooltip("Waiting for Mango layout state")
 
         local watchCommand =
           "mmsg watch all-monitors | jq --unbuffered -r '.monitors[] | select(.active == true) | .layout_symbol'"
 
         if not noctalia.runStream(watchCommand, showLayout) then
-          barWidget.setText("Layout ?")
+          showText("Layout ?")
           barWidget.setTooltip("Could not watch Mango layout state")
         end
 
         function onClick()
-          noctalia.runAsync("mmsg dispatch switch_layout")
+          noctalia.runAsync("mango-layout-picker")
         end
       '';
     };
@@ -326,7 +355,11 @@ in {
       size = 20;
     };
 
-    sessionPath = ["$HOME/bin"];
+    sessionPath = [
+      "$HOME/bin"
+      # Share Neovim's Mason-managed language servers with GUI editors.
+      "$HOME/.local/share/nvim/mason/bin"
+    ];
 
     sessionVariables = {
       EDITOR = "nvim";
@@ -354,6 +387,7 @@ in {
     qt5ctSettings.Appearance = {
       color_scheme_path = "${config.xdg.configHome}/qt5ct/colors/noctalia.conf";
       custom_palette = true;
+      icon_theme = "Adwaita";
       standard_dialogs = "xdgdesktopportal";
       style = "Fusion";
     };
@@ -361,6 +395,7 @@ in {
     qt6ctSettings.Appearance = {
       color_scheme_path = "${config.xdg.configHome}/qt6ct/colors/noctalia.conf";
       custom_palette = true;
+      icon_theme = "Adwaita";
       standard_dialogs = "xdgdesktopportal";
       style = "Fusion";
     };
@@ -555,7 +590,6 @@ in {
 
   programs = let
     noctaliaFont = "Iosevka Fixed";
-    terminalFont = "JetBrainsMono Nerd Font";
   in {
     home-manager.enable = true;
 
@@ -568,12 +602,78 @@ in {
 
     eza.enable = true;
 
-    foot = {
+    zed-editor = {
       enable = true;
-      settings.main = {
-        include = "~/.config/foot/themes/noctalia";
-        font = "${terminalFont}:size=11";
-        pad = "8x8";
+      extensions = [
+        "astro"
+        "biome"
+        "css-variables"
+        "dockerfile"
+        "everforest"
+        "html"
+        "kotlin"
+        "lua"
+        "opentofu"
+        "php"
+        "postgres-language-server"
+        "pylsp"
+        "sql"
+        "svelte"
+        "terraform"
+        "vue"
+        "zig"
+      ];
+      # Keep settings writable for Zed's UI and Noctalia's generated theme.
+      mutableUserSettings = true;
+      userSettings = {
+        languages = {
+          JavaScript.language_servers = [
+            "typescript-language-server"
+            "!vtsls"
+            "..."
+          ];
+          PHP.language_servers = ["intelephense"];
+          Python.language_servers = ["pylsp"];
+          TSX.language_servers = [
+            "typescript-language-server"
+            "!vtsls"
+            "..."
+          ];
+          TypeScript.language_servers = [
+            "typescript-language-server"
+            "!vtsls"
+            "..."
+          ];
+        };
+
+        lsp = {
+          intelephense.settings.intelephense.files.exclude = [
+            "**/.git/**"
+            "**/.svn/**"
+            "**/.hg/**"
+            "**/CVS/**"
+            "**/.DS_Store/**"
+            "**/node_modules/**"
+            "**/bower_components/**"
+            "**/vendor/**/{Tests,tests}/**"
+            "**/.history/**"
+            "**/vendor/**/vendor/**"
+            "**/_ide_helper.php"
+            "**/vendor/composer/autoload_classmap.php"
+            "**/vendor/composer/autoload_static.php"
+            "**/vendor/aws/aws-sdk-php/src/data/**/*.json.php"
+            "**/vendor/fakerphp/faker/src/Faker/Provider/**/Text.php"
+            "**/vendor/giggsey/libphonenumber-for-php/src/geocoding/data/**/*.php"
+            "**/vendor/utopia-php/domains/data/data.php"
+          ];
+
+          lua-language-server.settings.Lua = {
+            diagnostics.globals = ["vim"];
+            workspace.checkThirdParty = false;
+          };
+        };
+
+        theme = "Everforest Dark Medium (material)";
       };
     };
 
@@ -676,7 +776,6 @@ in {
 
               templates = {
                 builtin_ids = [
-                  "foot"
                   "gtk3"
                   "gtk4"
                   "ghostty"
