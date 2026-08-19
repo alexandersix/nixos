@@ -43,7 +43,11 @@
 
   networking = {
     networkmanager.enable = true;
-    firewall.enable = true;
+    firewall = {
+      enable = true;
+      allowedTCPPorts = [53317];
+      allowedUDPPorts = [53317];
+    };
   };
 
   i18n.defaultLocale = "en_US.UTF-8";
