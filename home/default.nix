@@ -623,9 +623,170 @@ in {
         "vue"
         "zig"
       ];
-      # Keep settings writable for Zed's UI and Noctalia's generated theme.
+      # Keep settings and keymaps writable while applying these defaults on rebuild.
+      mutableUserKeymaps = true;
       mutableUserSettings = true;
+      userKeymaps = [
+        {
+          context = "Editor && vim_mode == normal && !menu";
+          bindings = {
+            # Window and pane manipulation.
+            "space w v" = "pane::SplitRight";
+            "space w n" = "pane::SplitDown";
+            "space w d" = "pane::CloseActiveItem";
+            "space w o" = "workspace::CloseInactiveTabsAndPanes";
+            "space w h" = "workspace::ActivatePaneLeft";
+            "space w j" = "workspace::ActivatePaneDown";
+            "space w k" = "workspace::ActivatePaneUp";
+            "space w l" = "workspace::ActivatePaneRight";
+            "ctrl-h" = "workspace::ActivatePaneLeft";
+            "ctrl-j" = "workspace::ActivatePaneDown";
+            "ctrl-k" = "workspace::ActivatePaneUp";
+            "ctrl-l" = "workspace::ActivatePaneRight";
+            "ctrl-left" = "vim::ResizePaneLeft";
+            "ctrl-right" = "vim::ResizePaneRight";
+            "ctrl-up" = "vim::ResizePaneUp";
+            "ctrl-down" = "vim::ResizePaneDown";
+
+            # Buffer and file manipulation.
+            "space b j" = "pane::AlternateFile";
+            "space b n" = "pane::ActivateNextItem";
+            "space b p" = "pane::ActivatePreviousItem";
+            "space f s" = "workspace::Save";
+            "space w q" = [
+              "pane::CloseActiveItem"
+              {save_intent = "save_all";}
+            ];
+
+            # Neovim-style movement and editing defaults.
+            "shift-h" = "vim::FirstNonWhitespace";
+            "shift-l" = "vim::EndOfLine";
+            "shift-y" = [
+              "workspace::SendKeystrokes"
+              "y $"
+            ];
+            "shift-q" = null;
+
+            # Center searches and half-page movements like n/N/C-u/C-d + zz.
+            "n" = [
+              "workspace::SendKeystrokes"
+              "space z n z z"
+            ];
+            "shift-n" = [
+              "workspace::SendKeystrokes"
+              "space z shift-n z z"
+            ];
+            "ctrl-u" = [
+              "workspace::SendKeystrokes"
+              "space z u z z"
+            ];
+            "ctrl-d" = [
+              "workspace::SendKeystrokes"
+              "space z d z z"
+            ];
+            "space z n" = "vim::MoveToNextMatch";
+            "space z shift-n" = "vim::MoveToPreviousMatch";
+            "space z u" = "vim::ScrollUp";
+            "space z d" = "vim::ScrollDown";
+
+            # Mini.files, Mini.pick, Harpoon, and Quicker analogues.
+            "space e" = "project_panel::ToggleFocus";
+            "space space" = "file_finder::Toggle";
+            "space ." = "pane::DeploySearch";
+            "space f o" = "file_finder::Toggle";
+            "space s l" = "outline::Toggle";
+            "space f h" = "tab_switcher::Toggle";
+            "space f m" = "pane::TogglePinTab";
+            "space f j" = [
+              "pane::ActivateItem"
+              0
+            ];
+            "space f k" = [
+              "pane::ActivateItem"
+              1
+            ];
+            "space f l" = [
+              "pane::ActivateItem"
+              2
+            ];
+            "space f ;" = [
+              "pane::ActivateItem"
+              3
+            ];
+            "space q q" = "diagnostics::Deploy";
+            "space q g" = "pane::DeploySearch";
+            "space q r" = [
+              "pane::DeploySearch"
+              {replace_enabled = true;}
+            ];
+            "space q shift-r" = [
+              "pane::DeploySearch"
+              {replace_enabled = true;}
+            ];
+            "space f r" = [
+              "pane::DeploySearch"
+              {replace_enabled = true;}
+            ];
+            "] q" = "editor::GoToDiagnostic";
+            "[ q" = "editor::GoToPreviousDiagnostic";
+
+            # LSP actions.
+            "g d" = "editor::GoToDefinition";
+            "g shift-d" = "editor::GoToTypeDefinition";
+            "g a" = "editor::ToggleCodeActions";
+            "g x" = "editor::Hover";
+            "g r" = "editor::FindAllReferences";
+            "g shift-r" = "editor::Rename";
+            "shift-k" = "editor::Hover";
+            "f f" = "editor::Format";
+
+            # Gitsigns analogues.
+            "] c" = "editor::GoToHunk";
+            "[ c" = "editor::GoToPreviousHunk";
+            "space h s" = "git::ToggleStaged";
+            "space h r" = "git::Restore";
+            "space h shift-s" = "git::StageFile";
+            "space h shift-r" = [
+              "git::RestoreFile"
+              {skip_prompt = false;}
+            ];
+            "space h p" = "editor::ToggleSelectedDiffHunks";
+            "space h i" = "editor::ToggleSelectedDiffHunks";
+            "space h b" = "git::Blame";
+            "space h d" = "git::Diff";
+            "space h shift-d" = "git::FileHistory";
+            "space h q" = "git::Diff";
+            "space h shift-q" = "git::OpenModifiedFiles";
+            "space t b" = "editor::ToggleGitBlameInline";
+            "space t w" = "editor::ToggleSelectedDiffHunks";
+          };
+        }
+        {
+          context = "Editor && vim_mode == visual && !menu";
+          bindings = {
+            # Gitsigns applies these actions to the selected line range.
+            "space h s" = "git::ToggleStaged";
+            "space h r" = "git::Restore";
+          };
+        }
+        {
+          context = "Editor && vim_mode == insert && menu";
+          bindings = {
+            "ctrl-j" = "menu::SelectNext";
+            "ctrl-k" = "menu::SelectPrevious";
+          };
+        }
+        {
+          context = "Editor && vim_mode == insert && !menu";
+          bindings = {
+            "ctrl-j" = "editor::Tab";
+            "ctrl-k" = "editor::Backtab";
+          };
+        }
+      ];
       userSettings = {
+        vim_mode = true;
+
         languages = {
           JavaScript.language_servers = [
             "typescript-language-server"
