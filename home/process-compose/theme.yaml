@@ -1,0 +1,41 @@
+style:
+  name: Everforest
+  body:
+    fgColor: '#d3c6aa'
+    bgColor: '#1e2326'
+    secondaryTextColor: '#dbbc7f'
+    tertiaryTextColor: '#a7c080'
+    borderColor: '#7a8478'
+  stat_table:
+    keyFgColor: '#dbbc7f'
+    valueFgColor: '#d3c6aa'
+    bgColor: '#1e2326'
+    logoColor: '#dbbc7f'
+  proc_table:
+    fgColor: '#7fbbb3'
+    fgWarning: '#dbbc7f'
+    fgPending: '#a6b0a0'
+    fgCompleted: '#a7c080'
+    fgError: '#e67e80'
+    bgColor: '#1e2326'
+    headerFgColor: '#d3c6aa'
+  help:
+    fgColor: '#1e2326'
+    keyColor: '#d3c6aa'
+    hlColor: '#a7c080'
+    buttonBgColor: '#4c3743'
+    categoryFgColor: '#7fbbb3'
+    linkDonateColor: '#dbbc7f'
+    linkAskColor: '#e69875'
+  dialog:
+    fgColor: '#7fbbb3'
+    bgColor: '#1e2326'
+    contrastBgColor: '#4c3743'
+    attentionBgColor: '#e67e80'
+    buttonFgColor: '#1e2326'
+    buttonBgColor: '#83c092'
+    buttonFocusFgColor: '#1e2326'
+    buttonFocusBgColor: '#7fbbb3'
+    labelFgColor: '#dbbc7f'
+    fieldFgColor: '#1e2326'
+    fieldBgColor: '#d3c6aa'

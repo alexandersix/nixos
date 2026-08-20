@@ -45,6 +45,7 @@
 in {
   imports = [
     inputs.noctalia.homeModules.default
+    ./process-compose.nix
     ./webapps.nix
   ];
 
