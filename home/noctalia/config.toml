@@ -201,6 +201,9 @@ enabled = false
 [widget.clipboard]
 enabled = false
 
+[widget.clock]
+format = "{:%b %d | %H:%M}"
+
 [widget.control-center]
 enabled = false
 
