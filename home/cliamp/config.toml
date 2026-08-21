@@ -1,0 +1,4 @@
+# Initial cliamp defaults. cliamp may update this writable file at runtime.
+theme = "Everforest"
+initial_directory = "~/Music"
+
