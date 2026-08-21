@@ -6,6 +6,12 @@
   # Keep web app IDs stable: Home Manager uses them for the .desktop filenames,
   # while `name` is only the label shown by the application launcher.
   webApps = {
+    figma = {
+      name = "Figma";
+      url = "https://www.figma.com/";
+      icon = ./webapps/icons/figma.svg;
+    };
+
     x = {
       name = "X";
       url = "https://x.com/";
