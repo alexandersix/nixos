@@ -10,6 +10,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    cliamp.url = "github:bjarneo/cliamp";
+
     mangowm = {
       url = "github:mangowm/mango";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -26,6 +28,7 @@
   };
 
   outputs = inputs @ {
+    cliamp,
     home-manager,
     mangowm,
     nixpkgs,

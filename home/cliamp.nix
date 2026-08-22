@@ -1,48 +1,13 @@
 {
   config,
+  inputs,
   lib,
   pkgs,
   ...
-}: let
-  cliamp = pkgs.stdenvNoCC.mkDerivation {
-    pname = "cliamp";
-    version = "1.63.2";
-
-    src = pkgs.fetchurl {
-      url = "https://github.com/bjarneo/cliamp/releases/download/v1.63.2/cliamp-linux-amd64";
-      hash = "sha256-sGaDLITLnf/LEmJS3ttVoOvNE8uslbv/EDsRG4jOF8k=";
-    };
-
-    dontUnpack = true;
-    nativeBuildInputs = [
-      pkgs.autoPatchelfHook
-      pkgs.makeWrapper
-    ];
-    buildInputs = [pkgs.alsa-lib];
-
-    installPhase = ''
-      runHook preInstall
-
-      install -Dm755 "$src" "$out/bin/cliamp"
-      wrapProgram "$out/bin/cliamp" \
-        --prefix PATH : ${lib.makeBinPath [
-        pkgs.ffmpeg-full
-        pkgs.yt-dlp
-      ]}
-
-      runHook postInstall
-    '';
-
-    meta = {
-      description = "Terminal music player inspired by Winamp";
-      homepage = "https://github.com/bjarneo/cliamp";
-      license = lib.licenses.mit;
-      mainProgram = "cliamp";
-      platforms = ["x86_64-linux"];
-    };
-  };
-in {
-  home.packages = [cliamp];
+}: {
+  home.packages = [
+    inputs.cliamp.packages.${pkgs.stdenv.hostPlatform.system}.default
+  ];
 
   # cliamp persists settings such as volume and theme changes in this file, so
   # seed a normal writable file instead of managing it as a read-only symlink.
