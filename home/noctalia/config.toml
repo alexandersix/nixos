@@ -147,7 +147,7 @@ panel_anchor_bar = "top"
 polkit_agent = true
 
     [shell.greeter_sync]
-    auto_sync = true
+    auto_sync = false
     privilege_command = "pkexec"
 
     [shell.launcher.providers.wallpaper]
@@ -181,16 +181,13 @@ wallpaper_scheme = "m3-content"
     ]
 
 [wallpaper]
-directory = "/home/alexandersix/wallpapers"
+directory = "/home/alexandersix/.local/share/calendar-wallpaper"
 
     [wallpaper.default]
-    path = "/home/alexandersix/wallpapers/everforest/abstract/polyscape.png"
+    path = "/home/alexandersix/.local/share/calendar-wallpaper/fallback.png"
 
     [wallpaper.last]
-    path = "/home/alexandersix/wallpapers/everforest/abstract/polyscape.png"
-
-    [wallpaper.monitors.HDMI-A-1]
-    path = "/home/alexandersix/wallpapers/everforest/abstract/polyscape.png"
+    path = "/home/alexandersix/.local/share/calendar-wallpaper/fallback.png"
 
 [weather]
 unit = "imperial"

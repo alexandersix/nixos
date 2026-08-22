@@ -135,6 +135,50 @@ added under `programs.zed-editor.userSettings`; Home Manager merges those values
 into the writable file on activation. The same module can also manage keymaps,
 tasks, debug profiles, extensions, and custom themes.
 
+## Live calendar wallpaper
+
+Home Manager packages and enables a deterministic Everforest calendar
+wallpaper. Mango's startup hook renders the current local date at each active
+output's physical resolution before Noctalia starts. A user timer refreshes it
+at `00:00:02` local time and performs an inexpensive fingerprint check every
+five minutes to recover after suspend, a timezone change, or monitor hotplug.
+On the current desktop, Mango's `2880x1620` logical output at `1.333333` scale
+is rendered as a native 16:9 `3840x2160` PNG. The medium and tall layouts are
+additional responsive modes for future laptop displays, not replacements for
+the 4K composition.
+
+The generator keeps two alternating PNG slots per recently seen output under
+`~/.cache/calendar-wallpaper`; it does not create a dated archive. Runtime
+state and the refresh lock live under
+`~/.local/state/calendar-wallpaper`. A date-free dark fallback is installed at
+`~/.local/share/calendar-wallpaper/fallback.png`, so a failed or interrupted
+render cannot intentionally leave a blank desktop.
+
+Useful commands after rebuilding are:
+
+```console
+calendar-wallpaper status
+calendar-wallpaper refresh --force
+calendar-wallpaper render --date 2026-08-21 --width 3840 --height 2160 \
+  --output /tmp/calendar-preview.png
+systemctl --user status calendar-wallpaper.timer
+journalctl --user -u calendar-wallpaper.service
+```
+
+Palette roles, monthly seasonal accents, fonts, week start, texture opacity,
+timer interval, and stale-output retention are configurable through
+`alexandersix.calendarWallpaper` in `home/calendar-wallpaper.nix`. The module
+is authoritative by default: a manual wallpaper selection remains available
+until the next timer check, which restores the generated wallpaper. Noctalia's
+community Everforest shell palette remains independent of the wallpaper, and
+automatic greeter wallpaper synchronization is disabled to prevent a daily
+privilege prompt.
+
+`sync-noctalia-config` deliberately removes runtime-managed per-monitor
+wallpaper entries and normalizes the fallback paths before saving the Noctalia
+snapshot. This prevents the alternating slot names from producing repository
+diffs.
+
 ## Saving Noctalia UI changes
 
 Noctalia writes Settings UI changes to its state directory. To promote the

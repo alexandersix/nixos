@@ -69,6 +69,33 @@ tmp_file=$(mktemp "$target_dir/.config.toml.tmp.XXXXXX")
 trap 'rm -f "$tmp_file"' EXIT
 
 noctalia config export merged > "$tmp_file"
+
+# Per-monitor wallpaper paths are runtime state owned by calendar-wallpaper.
+# Keep the exported snapshot stable instead of committing alternating a/b slots.
+normalized_file=$(mktemp "$target_dir/.config.toml.normalized.XXXXXX")
+trap 'rm -f "$tmp_file" "$normalized_file"' EXIT
+awk -v fallback="$HOME/.local/share/calendar-wallpaper/fallback.png" '
+  /^[[:space:]]*\[/ {
+    if ($0 ~ /^[[:space:]]*\[wallpaper\.monitors\./) {
+      skipping_monitor = 1
+      next
+    }
+    skipping_monitor = 0
+    section = $0
+  }
+  skipping_monitor { next }
+  section ~ /^\[wallpaper\]$/ && /^[[:space:]]*directory[[:space:]]*=/ {
+    print "directory = \"" ENVIRON["HOME"] "/.local/share/calendar-wallpaper\""
+    next
+  }
+  section ~ /^    \[wallpaper\.(default|last)\]$/ && /^[[:space:]]*path[[:space:]]*=/ {
+    print "    path = \"" fallback "\""
+    next
+  }
+  { print }
+' "$tmp_file" > "$normalized_file"
+mv "$normalized_file" "$tmp_file"
+
 noctalia config validate "$tmp_file"
 chmod 0644 "$tmp_file"
 

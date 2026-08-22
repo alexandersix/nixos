@@ -1,6 +1,6 @@
 # Live Everforest Calendar Wallpaper Implementation Plan
 
-- Status: **approved direction; not implemented**
+- Status: **implemented; graphical lifecycle validation pending activation**
 - Created: 2026-08-21
 - Target environment: NixOS, Home Manager, Mango/Wayland, Noctalia 5.x
 - Primary host today: desktop output HDMI-A-1 at scale 1.333333

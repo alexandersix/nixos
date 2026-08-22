@@ -38,6 +38,7 @@
     name = "sync-noctalia-config";
     runtimeInputs = with pkgs; [
       coreutils
+      gawk
       git
     ];
     text = builtins.readFile ./scripts/sync-noctalia-config.sh;
@@ -45,6 +46,7 @@
 in {
   imports = [
     inputs.noctalia.homeModules.default
+    ./calendar-wallpaper.nix
     ./cliamp.nix
     ./process-compose.nix
     ./webapps.nix
@@ -371,6 +373,8 @@ in {
       VISUAL = "nvim";
     };
   };
+
+  alexandersix.calendarWallpaper.enable = true;
 
   gtk = {
     enable = true;
@@ -868,14 +872,14 @@ in {
         noctaliaSnapshot = builtins.fromTOML (builtins.readFile ./noctalia/config.toml);
       in
         lib.recursiveUpdate (lib.recursiveUpdate (let
-            defaultWallpaper = "/home/alexandersix/Pictures/Wallpapers/wallhaven-4xvdxo.jpg";
+            defaultWallpaper = config.alexandersix.calendarWallpaper.fallbackPath;
           in {
             shell = {
               font_family = noctaliaFont;
               polkit_agent = true;
               panel_anchor_bar = "top";
               greeter_sync = {
-                auto_sync = true;
+                auto_sync = false;
                 privilege_command = "pkexec";
               };
             };
@@ -967,9 +971,9 @@ in {
             };
 
             wallpaper = {
+              directory = "${config.home.homeDirectory}/.local/share/calendar-wallpaper";
               default.path = defaultWallpaper;
               last.path = defaultWallpaper;
-              monitors."HDMI-A-1".path = defaultWallpaper;
             };
 
             weather.unit = "imperial";
@@ -1090,7 +1094,13 @@ in {
           })
           noctaliaSnapshot) {
           shell.font_family = noctaliaFont;
+          shell.greeter_sync.auto_sync = false;
           plugins.enabled = lib.unique ((noctaliaSnapshot.plugins.enabled or []) ++ ["alexandersix/mango-layout"]);
+          wallpaper = {
+            directory = "${config.home.homeDirectory}/.local/share/calendar-wallpaper";
+            default.path = config.alexandersix.calendarWallpaper.fallbackPath;
+            last.path = config.alexandersix.calendarWallpaper.fallbackPath;
+          };
           widget."mango-layout".type = "alexandersix/mango-layout:layout";
           widget."workspace-layout-gap" = {
             type = "spacer";
