@@ -116,6 +116,18 @@
       "aeblfdkhhhdcdjpifhhbdiojplfjncoa" # 1Password
       "cjpalhdlnbpafiamejdnhcphjbkeiagm" # uBlock Origin
     ];
+    extraOpts = {
+      # Extensions declared above are installed through Chromium's enterprise
+      # policy mechanism. Chromium 150+ otherwise blocks DevTools on pages that
+      # embed a policy-installed extension, which includes ordinary pages where
+      # 1Password runs. This is a personal workstation, so keep DevTools fully
+      # available in every context, including policy-installed extensions.
+      DeveloperToolsAvailability = 1;
+
+      # Keep chrome://extensions developer mode available independently of the
+      # general DevTools policy (Chromium 128+ controls it separately).
+      ExtensionDeveloperModeSettings = 0;
+    };
   };
 
   # Keep a second rendering engine available for compatibility and recovery.
