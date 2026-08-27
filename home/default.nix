@@ -9,6 +9,61 @@
 }: let
   onePasswordSshAgentSocket = "${config.home.homeDirectory}/.1password/agent.sock";
 
+  laravelInstallerSource = pkgs.stdenvNoCC.mkDerivation (finalAttrs: {
+    pname = "laravel-installer-source";
+    version = "5.32.0";
+
+    src = pkgs.fetchFromGitHub {
+      owner = "laravel";
+      repo = "installer";
+      tag = "v${finalAttrs.version}";
+      hash = "sha256-qHZP9zkZ+uvJy/BEkr1A+gWm6DKgBnfCOqKQ7Kxq2j8=";
+    };
+
+    nativeBuildInputs = [pkgs.php.packages.composer];
+
+    postPatch = ''
+      substituteInPlace src/NewCommand.php \
+        --replace-fail \
+          '    protected function checkForUpdate(InputInterface $input, OutputInterface $output)' \
+          '    protected function checkForUpdate(InputInterface $input, OutputInterface $output) { return; } private function disabledCheckForUpdate(InputInterface $input, OutputInterface $output)'
+    '';
+
+    buildPhase = ''
+      runHook preBuild
+      composer install --no-dev --no-interaction --no-progress --prefer-dist
+      runHook postBuild
+    '';
+
+    installPhase = ''
+      runHook preInstall
+      mkdir -p $out
+      cp -R . $out
+      runHook postInstall
+    '';
+
+    outputHashMode = "recursive";
+    outputHashAlgo = "sha256";
+    outputHash = "sha256-Naw7u6bJwom2HMdTo0nAfXE/dUSm0rIysEwSImCXxrc=";
+    dontPatchShebangs = true;
+
+    meta = {
+      description = "Laravel application installer";
+      homepage = "https://laravel.com";
+      license = lib.licenses.mit;
+      mainProgram = "laravel";
+    };
+  });
+
+  laravelInstaller = pkgs.writeShellApplication {
+    name = "laravel";
+    runtimeInputs = [pkgs.php];
+    text = ''
+      exec php ${laravelInstallerSource}/bin/laravel "$@"
+    '';
+    meta = laravelInstallerSource.meta;
+  };
+
   chromiumProfilePicker = pkgs.writeShellApplication {
     name = "chromium-profile-picker";
     runtimeInputs = with pkgs; [
@@ -162,6 +217,7 @@ in {
       nodejs
       php
       php.packages.composer
+      laravelInstaller
       pnpm
       sqlite
 
