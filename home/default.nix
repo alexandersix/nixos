@@ -187,7 +187,7 @@ in {
       bruno
       pkgsUnstable.codex
       deadnix
-      devenv
+      pkgsUnstable.devenv
       docker-buildx
       docker-compose
       gcc
