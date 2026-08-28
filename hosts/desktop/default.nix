@@ -8,6 +8,7 @@
 in {
   imports = [
     ./hardware-configuration.nix
+    ../../modules/private-fonts.nix
     ../../modules/system.nix
   ];
 

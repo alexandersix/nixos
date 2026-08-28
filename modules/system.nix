@@ -9,6 +9,7 @@
       "1password-cli"
       "davinci-resolve-studio"
       "discord"
+      "fontshare-variable-fonts"
       "obsidian"
       "steam"
       "steam-unwrapped"
@@ -117,6 +118,10 @@
       "cjpalhdlnbpafiamejdnhcphjbkeiagm" # uBlock Origin
     ];
     extraOpts = {
+      # Figma's local font agent listens on loopback. Allow only Figma to reach
+      # local endpoints without an interactive "Apps on device" prompt.
+      LocalNetworkAccessAllowedForUrls = ["https://www.figma.com"];
+
       # Extensions declared above are installed through Chromium's enterprise
       # policy mechanism. Chromium 150+ otherwise blocks DevTools on pages that
       # embed a policy-installed extension, which includes ordinary pages where

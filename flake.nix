@@ -62,6 +62,11 @@
       ];
       text = builtins.readFile ./scripts/setup.sh;
     };
+    installPrivateFonts = pkgs.writeShellApplication {
+      name = "install-private-fonts";
+      runtimeInputs = [pkgs.nix];
+      text = builtins.readFile ./scripts/install-private-fonts.sh;
+    };
   in {
     nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
       inherit system;
@@ -76,10 +81,18 @@
       ];
     };
 
-    apps.${system}.setup = {
-      type = "app";
-      program = "${setup}/bin/nixos-setup";
-      meta.description = "Prepare hardware, user, and private configuration repositories";
+    apps.${system} = {
+      setup = {
+        type = "app";
+        program = "${setup}/bin/nixos-setup";
+        meta.description = "Prepare hardware, user, and private configuration repositories";
+      };
+
+      install-private-fonts = {
+        type = "app";
+        program = "${installPrivateFonts}/bin/install-private-fonts";
+        meta.description = "Add locally supplied licensed fonts to the Nix store";
+      };
     };
 
     formatter.${system} = pkgs.alejandra;

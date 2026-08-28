@@ -103,6 +103,7 @@ in {
     inputs.noctalia.homeModules.default
     ./calendar-wallpaper.nix
     ./cliamp.nix
+    ./figma-agent.nix
     ./process-compose.nix
     ./webapps.nix
   ];
@@ -143,6 +144,7 @@ in {
       adwaita-icon-theme
       alacritty
       file-roller
+      gnome-font-viewer
       imv
       nautilus
       kdePackages.okular
