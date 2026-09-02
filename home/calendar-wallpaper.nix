@@ -30,6 +30,7 @@
     };
     rsvg_convert = "${pkgs.librsvg}/bin/rsvg-convert";
     mmsg = "${osConfig.programs.mango.package}/bin/mmsg";
+    systemctl = "${pkgs.systemd}/bin/systemctl";
     noctalia = "${config.programs.noctalia.package}/bin/noctalia";
   });
 

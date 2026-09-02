@@ -24,7 +24,7 @@ from typing import Any
 
 
 SCHEMA_VERSION = 1
-RENDERER_VERSION = 1
+RENDERER_VERSION = 3
 PNG_SIGNATURE = b"\x89PNG\r\n\x1a\n"
 HEX_COLOR = re.compile(r"^#[0-9A-Fa-f]{6}$")
 SLOT_FILE = re.compile(r"^[a-zA-Z0-9_.-]+--[0-9a-f]{8}-[ab]\.png$")
@@ -54,7 +54,7 @@ def load_config(path: Path) -> dict[str, Any]:
     except (OSError, json.JSONDecodeError) as error:
         raise WallpaperError(f"cannot load config {path}: {error}") from error
 
-    required = {"palette", "months", "fonts", "rsvg_convert", "mmsg", "noctalia"}
+    required = {"palette", "months", "fonts", "rsvg_convert", "mmsg", "systemctl", "noctalia"}
     missing = required.difference(data)
     if missing:
         raise WallpaperError(f"config is missing: {', '.join(sorted(missing))}")
@@ -136,17 +136,17 @@ def render_svg(day: dt.date, width: int, height: int, config: dict[str, Any]) ->
     grid = calendar_grid(day, first_weekday)
 
     if mode == "wide":
-        numeral_x, numeral_y, numeral_size = width * 0.535, height * 0.940, height * 0.82
+        numeral_y, numeral_size = height * 0.940, height * 0.82
         calendar_x, calendar_y, calendar_w = width * 0.038, height * 0.615, width * 0.285
-        month_x, month_y = width * 0.057, height * 0.430
+        month_x = width * 0.057
     elif mode == "medium":
-        numeral_x, numeral_y, numeral_size = width * 0.445, height * 0.930, height * 0.66
+        numeral_y, numeral_size = height * 0.930, height * 0.66
         calendar_x, calendar_y, calendar_w = width * 0.045, height * 0.615, width * 0.345
-        month_x, month_y = width * 0.066, height * 0.450
+        month_x = width * 0.066
     else:
-        numeral_x, numeral_y, numeral_size = width * 0.285, height * 0.955, width * 0.63
+        numeral_y, numeral_size = height * 0.955, width * 0.63
         calendar_x, calendar_y, calendar_w = width * 0.105, height * 0.390, width * 0.790
-        month_x, month_y = width * 0.075, height * 0.310
+        month_x = width * 0.075
 
     cell_w = calendar_w / 7
     cell_h = short * (0.050 if mode != "tall" else 0.044)
@@ -156,6 +156,12 @@ def render_svg(day: dt.date, width: int, height: int, config: dict[str, Any]) ->
     year_y = safe + short * 0.045
     rule_y = safe + short * 0.082
     rule_end = width * (0.965 if mode != "tall" else 0.90)
+    numeral_x = rule_end
+    month_size = short * (0.044 if mode != "tall" else 0.027)
+    # The text's end becomes its visual top after the -90 degree rotation.
+    # Anchoring there makes longer month names grow down into the composition
+    # instead of up through the year and beyond the top edge.
+    month_y = rule_y + short * 0.035
 
     arc_radius = short * (0.205 if mode != "tall" else 0.245)
     arc_cx = calendar_x + calendar_w * (0.92 if mode != "tall" else 0.82)
@@ -229,12 +235,14 @@ def render_svg(day: dt.date, width: int, height: int, config: dict[str, Any]) ->
         _svg_text(
             str(day.day), numeral_x, numeral_y, numeral_size,
             fill=foreground, family=primary_font, weight=300, opacity=0.94,
+            anchor="end",
             spacing=short * (-0.034 if mode != "tall" else -0.012),
             extra='style="font-variant-numeric: lining-nums"',
         ),
         _svg_text(
-            month_name, month_x, month_y, short * (0.044 if mode != "tall" else 0.027),
+            month_name, month_x, month_y, month_size,
             fill=foreground, family=primary_font, weight=400, spacing=short * 0.010,
+            anchor="end",
             transform=f"rotate(-90 {month_x:.2f} {month_y:.2f})",
         ),
         f'<path d="{arc_path}" fill="none" stroke="{primary}" stroke-width="{max(2, short * 0.0022):.2f}" stroke-linecap="round" opacity="0.75"/>',
@@ -324,14 +332,44 @@ def parse_outputs(payload: dict[str, Any]) -> list[dict[str, Any]]:
 
 
 def discover_outputs(config: dict[str, Any]) -> list[dict[str, Any]]:
+    command = [config["mmsg"], "get", "all-monitors"]
     try:
         result = subprocess.run(
-            [config["mmsg"], "get", "all-monitors"],
+            command,
             check=True, capture_output=True, text=True, timeout=5,
         )
         return parse_outputs(json.loads(result.stdout))
     except (OSError, subprocess.SubprocessError, json.JSONDecodeError) as error:
-        raise WallpaperError(f"cannot discover Mango outputs: {error}") from error
+        inherited_error = error
+
+    # A terminal opened under an older Mango process can retain its defunct
+    # PID-specific IPC socket indefinitely. Mango's autostart imports the live
+    # signature into the systemd user manager, so use that as the authoritative
+    # fallback without mutating the caller's environment.
+    try:
+        manager = subprocess.run(
+            [config["systemctl"], "--user", "show-environment"],
+            check=True, capture_output=True, text=True, timeout=5,
+        )
+        prefix = "MANGO_INSTANCE_SIGNATURE="
+        signature = next(
+            (line.removeprefix(prefix) for line in manager.stdout.splitlines() if line.startswith(prefix)),
+            "",
+        )
+        if not signature or signature == os.environ.get("MANGO_INSTANCE_SIGNATURE"):
+            raise WallpaperError("systemd user manager has no newer Mango instance signature")
+        environment = os.environ.copy()
+        environment["MANGO_INSTANCE_SIGNATURE"] = signature
+        result = subprocess.run(
+            command,
+            check=True, capture_output=True, text=True, timeout=5, env=environment,
+        )
+        return parse_outputs(json.loads(result.stdout))
+    except (OSError, subprocess.SubprocessError, json.JSONDecodeError, WallpaperError) as fallback_error:
+        raise WallpaperError(
+            f"cannot discover Mango outputs: {inherited_error}; "
+            f"systemd environment fallback failed: {fallback_error}"
+        ) from inherited_error
 
 
 def validate_png(path: Path, width: int, height: int) -> None:

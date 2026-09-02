@@ -6,6 +6,8 @@ import importlib.util
 import json
 import os
 from pathlib import Path
+import re
+import subprocess
 import struct
 import tempfile
 import unittest
@@ -45,6 +47,7 @@ def config() -> dict:
         "fonts": {"primary": "Inter", "calendar": "Iosevka Fixed"},
         "rsvg_convert": "rsvg-convert",
         "mmsg": "mmsg",
+        "systemctl": "systemctl",
         "noctalia": "noctalia",
         "authoritative": True,
         "stale_output_days": 30,
@@ -98,6 +101,31 @@ class RenderingTests(unittest.TestCase):
         self.assertEqual(wallpaper.layout_mode(1350, 1000), "medium")
         self.assertEqual(wallpaper.layout_mode(1200, 1000), "tall")
 
+    def test_rotated_months_are_anchored_at_their_visual_top(self):
+        for width, height in ((3840, 2160), (1350, 1000), (1200, 1000)):
+            for month in range(1, 13):
+                month_name = dt.date(2026, month, 1).strftime("%B").upper()
+                svg = wallpaper.render_svg(dt.date(2026, month, 1), width, height, config())
+                match = re.search(
+                    rf'<text [^>]*y="([0-9.]+)" [^>]*text-anchor="end" [^>]*'
+                    rf'transform="rotate\(-90 [^)]+\)"[^>]*>{month_name}</text>',
+                    svg,
+                )
+                self.assertIsNotNone(match, f"month label is not top-anchored: {month_name}")
+
+    def test_day_numerals_share_the_same_right_edge(self):
+        for width, height in ((3840, 2160), (1350, 1000), (1200, 1000)):
+            right_edges = set()
+            for day_number in (2, 10, 21, 31):
+                svg = wallpaper.render_svg(dt.date(2026, 1, day_number), width, height, config())
+                match = re.search(
+                    rf'<text x="([0-9.]+)" [^>]*text-anchor="end" [^>]*>{day_number}</text>',
+                    svg,
+                )
+                self.assertIsNotNone(match, f"day numeral is not right-anchored: {day_number}")
+                right_edges.add(match.group(1))
+            self.assertEqual(len(right_edges), 1)
+
     def test_rejects_impossible_dimensions(self):
         with self.assertRaises(wallpaper.WallpaperError):
             wallpaper.render_svg(dt.date(2026, 8, 21), 320, 200, config())
@@ -129,6 +157,32 @@ class OutputTests(unittest.TestCase):
         stem = wallpaper.output_stem("../../strange/output")
         self.assertNotIn("/", stem)
         self.assertNotIn("..", stem)
+
+    def test_discovery_recovers_from_a_stale_terminal_mango_signature(self):
+        monitor_json = json.dumps({
+            "monitors": [{"name": "HDMI-A-1", "width": 1920, "height": 1080}]
+        })
+
+        def fake_run(command, **kwargs):
+            if command[:2] == ["mmsg", "get"] and "env" not in kwargs:
+                raise subprocess.CalledProcessError(1, command)
+            if command[:3] == ["systemctl", "--user", "show-environment"]:
+                return subprocess.CompletedProcess(
+                    command, 0, stdout="MANGO_INSTANCE_SIGNATURE=/run/user/1000/mango-live.sock\n"
+                )
+            self.assertEqual(
+                kwargs["env"]["MANGO_INSTANCE_SIGNATURE"],
+                "/run/user/1000/mango-live.sock",
+            )
+            return subprocess.CompletedProcess(command, 0, stdout=monitor_json)
+
+        with (
+            mock.patch.dict(os.environ, {"MANGO_INSTANCE_SIGNATURE": "/run/user/1000/mango-stale.sock"}),
+            mock.patch.object(wallpaper.subprocess, "run", side_effect=fake_run),
+        ):
+            outputs = wallpaper.discover_outputs(config())
+
+        self.assertEqual(outputs[0]["name"], "HDMI-A-1")
 
 
 class CoordinatorTests(unittest.TestCase):
