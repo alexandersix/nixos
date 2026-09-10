@@ -202,10 +202,17 @@ machine-local executables that are not ready to become declarative packages.
 ## Utility commands
 
 Home Manager builds `chromium-profile-picker`, `focus-urgent`,
-`mango-layout-picker`, and `sync-noctalia-config` from the sources in
-`home/scripts/`. Their runtime dependencies are included in their Nix packages,
-and Mango calls the first three by name. The separate utility-scripts repository
-is not required on a fresh installation.
+`mango-layout-picker`, `screenshot-annotate`, and `sync-noctalia-config` from
+the sources in `home/scripts/`. Their runtime dependencies are included in
+their Nix packages, and Mango calls the first four by name. The separate
+utility-scripts repository is not required on a fresh installation.
+
+`Super+Shift+F5` runs `screenshot-annotate`: select a region with Slurp, annotate
+it in Satty, then use the copy button (or `Ctrl+C`/`Enter`) to place the PNG on
+the Wayland clipboard. The save button (or `Ctrl+S`) writes a timestamped PNG
+to `~/Downloads`; `Ctrl+Shift+S` opens Save As. Satty exits after any completed
+copy or save action. The existing Noctalia fullscreen and region screenshot
+bindings on `Super+Shift+F3` and `Super+Shift+F4` remain unchanged.
 
 ## Declarative web apps
 

@@ -89,6 +89,18 @@
     text = builtins.readFile ./scripts/mango-layout-picker.sh;
   };
 
+  screenshotAnnotate = pkgs.writeShellApplication {
+    name = "screenshot-annotate";
+    runtimeInputs = with pkgs; [
+      coreutils
+      grim
+      satty
+      slurp
+      wl-clipboard
+    ];
+    text = builtins.readFile ./scripts/screenshot-annotate.sh;
+  };
+
   syncNoctaliaConfig = pkgs.writeShellApplication {
     name = "sync-noctalia-config";
     runtimeInputs = with pkgs; [
@@ -118,6 +130,7 @@ in {
       chromiumProfilePicker
       focusUrgent
       mangoLayoutPicker
+      screenshotAnnotate
       syncNoctaliaConfig
 
       # Core command-line tools
