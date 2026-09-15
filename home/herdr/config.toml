@@ -22,6 +22,8 @@ auto_switch = false
 [theme.custom]
 accent = "#a7c080"
 panel_bg = "#333c43"
+active_row_bg = "#3c474d"
+selection_bg = "#505a60"
 surface0 = "#3c474d"
 surface1 = "#505a60"
 surface_dim = "#2d353b"
