@@ -8,6 +8,7 @@
   ...
 }: let
   onePasswordSshAgentSocket = "${config.home.homeDirectory}/.1password/agent.sock";
+  php = pkgs.php85;
 
   laravelInstallerSource = pkgs.stdenvNoCC.mkDerivation (finalAttrs: {
     pname = "laravel-installer-source";
@@ -20,7 +21,7 @@
       hash = "sha256-qHZP9zkZ+uvJy/BEkr1A+gWm6DKgBnfCOqKQ7Kxq2j8=";
     };
 
-    nativeBuildInputs = [pkgs.php.packages.composer];
+    nativeBuildInputs = [php.packages.composer];
 
     postPatch = ''
       substituteInPlace src/NewCommand.php \
@@ -57,7 +58,7 @@
 
   laravelInstaller = pkgs.writeShellApplication {
     name = "laravel";
-    runtimeInputs = [pkgs.php];
+    runtimeInputs = [php];
     text = ''
       exec php ${laravelInstallerSource}/bin/laravel "$@"
     '';
