@@ -1034,7 +1034,6 @@ in {
                   "zed"
                   "fuzzel"
                   "fastfetch"
-                  "obs"
                   "bat"
                   "lazygit"
                   "yazi"
