@@ -24,6 +24,12 @@
       ];
     };
 
+    todoist = {
+      name = "Todoist";
+      url = "https://app.todoist.com/app/today";
+      icon = ./webapps/icons/todoist.svg;
+    };
+
     x = {
       name = "X";
       url = "https://x.com/";
