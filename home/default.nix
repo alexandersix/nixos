@@ -1198,6 +1198,7 @@ in {
       autosuggestion.enable = true;
       syntaxHighlighting.enable = true;
       initContent = ''
+        export PATH="$HOME/.local/bin:$PATH"
         bindkey -M viins '^R' history-incremental-search-backward
         eval "$(${pkgsUnstable.worktrunk}/bin/wt config shell init zsh)"
       '';
