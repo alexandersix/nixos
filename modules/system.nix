@@ -16,6 +16,20 @@
       "zoom"
     ];
 
+  nixpkgs.overlays = [
+    (_final: prev: {
+      xdg-desktop-portal-wlr = prev.xdg-desktop-portal-wlr.overrideAttrs (_old: rec {
+        version = "0.8.4";
+        src = prev.fetchFromGitHub {
+          owner = "emersion";
+          repo = "xdg-desktop-portal-wlr";
+          rev = "v${version}";
+          hash = "sha256-8Ohgkz13FcG8ddjjgreXkvFD2Q+zUDZnAM4Oh+C9P/s=";
+        };
+      });
+    })
+  ];
+
   nix = {
     settings = {
       experimental-features = [
