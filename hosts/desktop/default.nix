@@ -12,7 +12,7 @@ in {
     ../../modules/system.nix
   ];
 
-  boot.kernelPackages = pkgs.linuxPackages_7_1;
+  boot.kernelPackages = pkgs.linuxPackages_7_2;
 
   networking.hostName = "desktop";
   time.timeZone = "America/New_York";

@@ -520,6 +520,35 @@ in {
       '';
     };
 
+    configFile."noctalia/templates/mango.conf" = {
+      force = true;
+      text = ''
+        # Noctalia Theme for Mango
+        # Kept locally until Noctalia's built-in template targets Mango 0.17 names.
+
+        root_color = 0x{{colors.surface.default.hex_stripped}}ff
+        border_color = 0x{{colors.outline.default.hex_stripped}}ff
+        drop_color = 0x{{colors.primary.default.hex_stripped}}80
+        split_color = 0x{{colors.tertiary.default.hex_stripped}}ff
+        focus_color = 0x{{colors.primary.default.hex_stripped}}ff
+        maximized_screen_color = 0x{{colors.secondary.default.hex_stripped}}ff
+        urgent_color = 0x{{colors.error.default.hex_stripped}}ff
+        scratchpad_color = 0x{{colors.tertiary.default.hex_stripped}}ff
+        global_color = 0x{{colors.primary_container.default.hex_stripped}}ff
+        overlay_color = 0x{{colors.secondary_container.default.hex_stripped}}ff
+        jump_label_decorate_fg_color = 0x{{colors.on_surface.default.hex_stripped}}ff
+        jump_label_decorate_bg_color = 0x{{colors.surface_container_high.default.hex_stripped}}ff
+        jump_label_decorate_focus_fg_color = 0x{{colors.on_primary.default.hex_stripped}}ff
+        jump_label_decorate_focus_bg_color = 0x{{colors.primary.default.hex_stripped}}ff
+        jump_label_decorate_border_color = 0x{{colors.outline.default.hex_stripped}}ff
+        group_bar_decorate_fg_color = 0x{{colors.on_surface.default.hex_stripped}}ff
+        group_bar_decorate_bg_color = 0x{{colors.surface_container_high.default.hex_stripped}}ff
+        group_bar_decorate_focus_fg_color = 0x{{colors.on_primary.default.hex_stripped}}ff
+        group_bar_decorate_focus_bg_color = 0x{{colors.primary.default.hex_stripped}}ff
+        group_bar_decorate_border_color = 0x{{colors.outline.default.hex_stripped}}ff
+      '';
+    };
+
     configFile."mimeapps.list".force = true;
 
     userDirs = {
@@ -642,6 +671,26 @@ in {
       ${./mango/noctalia.conf} \
       "${config.xdg.configHome}/mango" \
       noctalia.conf
+
+    # Mango 0.17 renamed its remaining compact option names to snake_case.
+    # Preserve the current generated colors while migrating the writable file;
+    # future palette changes use the compatible user template declared above.
+    mango_theme="${config.xdg.configHome}/mango/noctalia.conf"
+    if [[ -f "$mango_theme" ]]; then
+      $DRY_RUN_CMD ${pkgs.gnused}/bin/sed -i \
+        -e 's/^shadowscolor\([[:space:]]*=\)/shadows_color\1/' \
+        -e 's/^rootcolor\([[:space:]]*=\)/root_color\1/' \
+        -e 's/^bordercolor\([[:space:]]*=\)/border_color\1/' \
+        -e 's/^dropcolor\([[:space:]]*=\)/drop_color\1/' \
+        -e 's/^splitcolor\([[:space:]]*=\)/split_color\1/' \
+        -e 's/^focuscolor\([[:space:]]*=\)/focus_color\1/' \
+        -e 's/^maximizescreencolor\([[:space:]]*=\)/maximized_screen_color\1/' \
+        -e 's/^urgentcolor\([[:space:]]*=\)/urgent_color\1/' \
+        -e 's/^scratchpadcolor\([[:space:]]*=\)/scratchpad_color\1/' \
+        -e 's/^globalcolor\([[:space:]]*=\)/global_color\1/' \
+        -e 's/^overlaycolor\([[:space:]]*=\)/overlay_color\1/' \
+        "$mango_theme"
+    fi
   '';
 
   services = {
@@ -1166,6 +1215,15 @@ in {
           noctaliaSnapshot) {
           shell.font_family = noctaliaFont;
           shell.greeter_sync.auto_sync = false;
+          theme.templates = {
+            builtin_ids = lib.remove "mango" (noctaliaSnapshot.theme.templates.builtin_ids or []);
+            user.mango = {
+              input_path = "${config.xdg.configHome}/noctalia/templates/mango.conf";
+              output_path = "${config.xdg.configHome}/mango/noctalia.conf";
+              post_hook = "mmsg dispatch reload_config 2>/dev/null || true";
+              hook_async = false;
+            };
+          };
           plugins.enabled = lib.unique ((noctaliaSnapshot.plugins.enabled or []) ++ ["alexandersix/mango-layout"]);
           wallpaper = {
             directory = "${config.home.homeDirectory}/.local/share/calendar-wallpaper";

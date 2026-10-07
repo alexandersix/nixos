@@ -174,18 +174,6 @@
       recommendedServices.enable = true;
       systemd.enable = false;
     };
-    noctalia-greeter = {
-      enable = true;
-      settings = {
-        cursor = {
-          theme = "Bibata-Modern-Classic";
-          size = 20;
-          path = "${pkgs.bibata-cursors}/share/icons";
-        };
-        idle.timeout = 300;
-        keyboard.layout = "us";
-      };
-    };
     obs-studio = {
       enable = true;
       enableVirtualCamera = true;
@@ -213,6 +201,19 @@
       enable = true;
       nssmdns4 = true;
       openFirewall = true;
+    };
+
+    displayManager.noctalia-greeter = {
+      enable = true;
+      settings = {
+        cursor = {
+          theme = "Bibata-Modern-Classic";
+          size = 20;
+          path = "${pkgs.bibata-cursors}/share/icons";
+        };
+        idle.timeout = 300;
+        keyboard.layout = "us";
+      };
     };
 
     btrfs.autoScrub = {
