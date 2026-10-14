@@ -1,0 +1,97 @@
+/* Adapted from daccfiles/.config/browser_stuff for Firefox 157.
+ * Everforest Dark Medium, matching the workstation's calendar/terminal palette.
+ */
+@-moz-document url("chrome://browser/content/browser.xhtml"), url("chrome://browser/content/webext-panels.xhtml") {
+  :root {
+    --lwt-accent-color: #232a2e !important;
+    --lwt-text-color: #d3c6aa !important;
+    --toolbar-bgcolor: #2d353b !important;
+    --toolbar-color: #d3c6aa !important;
+    --toolbar-field-background-color: #232a2e !important;
+    --toolbar-field-color: #d3c6aa !important;
+    --toolbar-field-border-color: #475258 !important;
+    --toolbar-field-focus-background-color: #343f44 !important;
+    --toolbar-field-focus-color: #d3c6aa !important;
+    --toolbar-field-focus-border-color: #a7c080 !important;
+    --toolbarbutton-icon-fill: #d3c6aa !important;
+    --toolbarbutton-icon-fill-attention: #a7c080 !important;
+    --toolbarbutton-hover-background: #3d484d !important;
+    --toolbarbutton-active-background: #475258 !important;
+    --toolbarseparator-color: #475258 !important;
+    --chrome-content-separator-color: #475258 !important;
+    --arrowpanel-background: #2d353b !important;
+    --arrowpanel-color: #d3c6aa !important;
+    --arrowpanel-border-color: #475258 !important;
+    --arrowpanel-dimmed: #3d484d !important;
+    --arrowpanel-dimmed-further: #475258 !important;
+    --panel-background: #2d353b !important;
+    --panel-color: #d3c6aa !important;
+    --panel-border-color: #475258 !important;
+    --sidebar-background-color: #232a2e !important;
+    --sidebar-text-color: #d3c6aa !important;
+    --sidebar-border-color: #475258 !important;
+    --tab-selected-bgcolor: #343f44 !important;
+    --tab-selected-textcolor: #d3c6aa !important;
+    --focus-outline-color: #a7c080 !important;
+    --color-accent-primary: #a7c080 !important;
+    --color-accent-primary-hover: #b5cc93 !important;
+    --color-accent-primary-active: #83c092 !important;
+    --font-family: "Iosevka Fixed", monospace !important;
+    --border-radius-small: 0 !important;
+    --border-radius-medium: 0 !important;
+    --border-radius-large: 0 !important;
+    --toolbarbutton-border-radius: 0 !important;
+    --arrowpanel-border-radius: 0 !important;
+    color-scheme: dark !important;
+    font-family: "Iosevka Fixed", monospace !important;
+  }
+
+  * { border-radius: 0 !important; }
+
+  /* Keep Firefox's tabs available whenever Sidebery is closed or unavailable.
+   * This also leaves private windows usable without enabling the extension there.
+   */
+  :root:has(#sidebar-box[sidebarcommand="_3c078156-979c-498b-8990-85f7987dd929_-sidebar-action"]:not([hidden])) #TabsToolbar {
+    display: none !important;
+  }
+
+  #sidebar-box[sidebarcommand="_3c078156-979c-498b-8990-85f7987dd929_-sidebar-action"] {
+    padding-inline-start: 0 !important;
+    background-color: #232a2e !important;
+    color: #d3c6aa !important;
+    min-width: 220px !important;
+  }
+
+  #sidebar-box[sidebarcommand="_3c078156-979c-498b-8990-85f7987dd929_-sidebar-action"] #sidebar-header {
+    display: none !important;
+  }
+
+  #navigator-toolbox, #nav-bar, #PersonalToolbar {
+    background-color: #2d353b !important;
+    color: #d3c6aa !important;
+  }
+
+  #urlbar-background, #searchbar {
+    background-color: #232a2e !important;
+    border-color: #475258 !important;
+  }
+
+  #urlbar[focused] #urlbar-background {
+    background-color: #343f44 !important;
+    border-color: #a7c080 !important;
+  }
+
+  #urlbar-input, #searchbar, .tab-label, toolbarbutton, menupopup, panel {
+    font-family: "Iosevka Fixed", monospace !important;
+  }
+
+  .urlbarView-row[selected] .urlbarView-row-inner {
+    background-color: #3d484d !important;
+    color: #d3c6aa !important;
+  }
+}
+
+/* Firefox 157 places the extension panel header in a separate chrome document. */
+@-moz-document url("chrome://browser/content/webext-panels.xhtml") {
+  #sidebar-panel-header { display: none !important; }
+}

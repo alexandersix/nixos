@@ -1,0 +1,14 @@
+{
+  "toolkit.legacyUserProfileCustomizations.stylesheets": true,
+  "extensions.autoDisableScopes": 0,
+  "extensions.activeThemeID": "firefox-compact-dark@mozilla.org",
+  "browser.theme.content-theme": 0,
+  "browser.theme.toolbar-theme": 0,
+  "browser.uidensity": 1,
+  "browser.compactmode.show": true,
+  "sidebar.revamp": false,
+  "sidebar.verticalTabs": false,
+  "sidebar.position_start": true,
+  "browser.startup.page": 3,
+  "font.name.monospace.x-western": "Iosevka Fixed"
+}

@@ -1,0 +1,55 @@
+/* The URL path comes from Sidebery's manifest; its generated UUID can change.
+ * Firefox loads this as part of userContent.css, with no Style editor import.
+ */
+@-moz-document regexp("moz-extension://[^/]+/sidebar/sidebar\\.html.*") {
+  #root.root {
+    --frame-bg: #232a2e !important;
+    --frame-fg: #d3c6aa !important;
+    --toolbar-bg: #2d353b !important;
+    --toolbar-fg: #d3c6aa !important;
+    --toolbar-fg-active: #a7c080 !important;
+    --active-el-bg: #343f44 !important;
+    --active-el-fg: #d3c6aa !important;
+    --active-el-shadow: none !important;
+    --popup-bg: #2d353b !important;
+    --popup-fg: #d3c6aa !important;
+    --accent: #a7c080 !important;
+    --frame-el-overlay-hover-bg: #3d484d !important;
+    --frame-el-overlay-selected-bg: #3d484d !important;
+    --frame-el-overlay-selected-border: #a7c080 !important;
+    --toolbar-el-overlay-hover-bg: #3d484d !important;
+    --toolbar-el-overlay-active-border: #a7c080 !important;
+    --tabs-height: 36px !important;
+    --tabs-inner-gap: 8px !important;
+    --tabs-margin: 4px !important;
+    --tabs-font: 16px "Iosevka Fixed", monospace !important;
+    --tabs-count-font: 16px "Iosevka Fixed", monospace !important;
+    --tabs-normal-bg: #232a2e !important;
+    --tabs-normal-fg: #d3c6aa !important;
+    --tabs-activated-bg: #343f44 !important;
+    --tabs-activated-fg: #d3c6aa !important;
+    --tabs-activated-shadow: none !important;
+    --tabs-progress-bg: #a7c080 !important;
+    --general-font-family: "Iosevka Fixed", monospace !important;
+    --general-margin: 4px !important;
+    --general-border-radius: 0 !important;
+    --tabs-border-radius: 0 !important;
+    color-scheme: dark;
+  }
+
+  #root * { border-radius: 0 !important; }
+
+  .Tab[data-active="true"] .body {
+    outline: 2px solid #a7c080 !important;
+    outline-offset: -2px;
+  }
+
+  .NavigationBar .main-items .nav-item[data-class="panel"] .name-box {
+    border-width: 2px !important;
+  }
+
+  .NavigationBar .nav-item[data-active="true"] {
+    outline: 1px solid #a7c080 !important;
+    outline-offset: -1px;
+  }
+}

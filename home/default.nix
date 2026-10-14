@@ -117,6 +117,7 @@ in {
     ./calendar-wallpaper.nix
     ./cliamp.nix
     ./figma-agent.nix
+    ./firefox.nix
     ./process-compose.nix
     ./webapps.nix
   ];
@@ -996,6 +997,7 @@ in {
             defaultWallpaper = config.alexandersix.calendarWallpaper.fallbackPath;
           in {
             shell = {
+              corner_radius_scale = 0.0;
               font_family = noctaliaFont;
               polkit_agent = true;
               panel_anchor_bar = "top";
@@ -1044,10 +1046,10 @@ in {
                 settings = {
                   background_color = "surface_variant";
                   background_opacity = 0.88;
-                  background_radius = 12.0;
+                  background_radius = 0.0;
                   center_password_text = false;
                   input_opacity = 1.0;
-                  input_radius = 6.0;
+                  input_radius = 0.0;
                   show_caps_lock = true;
                   show_keyboard_layout = true;
                   show_login_button = true;
@@ -1116,6 +1118,7 @@ in {
                 type = "spacer";
                 settings.length = 4;
               };
+              workspaces.capsule_radius = 0.0;
               video-wallpaper.type = "noctalia/mpvpaper:mpvpaper";
               wallhaven.type = "noctalia/wallhaven:wallhaven";
               mango-layout.type = "alexandersix/mango-layout:layout";
@@ -1124,14 +1127,14 @@ in {
             bar = let
               frameThickness = 12;
               topThickness = 40;
-              innerRadius = 16;
+              innerRadius = 0;
               frame = position:
                 {
                   inherit position;
                   thickness = frameThickness;
                   background_opacity = 1.0;
                   radius = innerRadius;
-                  concave_edge_corners = true;
+                  concave_edge_corners = false;
                   margin_ends = 0;
                   margin_edge = 0;
                   reserve_space = true;
@@ -1173,7 +1176,7 @@ in {
                 radius = innerRadius;
                 radius_top_left = 0;
                 radius_top_right = 0;
-                concave_edge_corners = true;
+                concave_edge_corners = false;
                 margin_ends = 0;
                 margin_edge = 0;
                 reserve_space = true;

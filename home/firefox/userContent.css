@@ -1,0 +1,181 @@
+/* Everforest adaptation of daccfiles userContent.css. Scoped to Firefox internal pages. */
+@-moz-document url-prefix("about:") {
+    html, body {
+        color-scheme: dark !important;
+        font-family: "Iosevka Fixed", monospace !important;
+        background-color: #232a2e !important;
+        color: #d3c6aa !important;
+    }
+
+    html {
+        --border-radius-small: 0 !important;
+        --border-radius-medium: 0 !important;
+        --border-radius-large: 0 !important;
+    }
+
+    * { border-radius: 0 !important; }
+
+    button:hover, .button:hover {
+        background-color: #a7c080 !important;
+        color: #232a2e !important;
+    }
+
+    * {
+        --in-content-page-background: #232a2e !important;
+        --in-content-page-color: #d3c6aa !important;
+        --newtab-background-color: #232a2e !important;
+        --newtab-background-color-secondary: #2d353b !important;
+        --newtab-text-primary-color: #d3c6aa !important;
+        --newtab-text-secondary-color: #9da9a0 !important;
+        --newtab-primary-action-background: #a7c080 !important;
+        --color-accent-primary-hover: #b5cc93 !important;
+        --color-accent-primary-active: #83c092 !important;
+        --color-accent-primary-contrast: #232a2e !important;
+        --text-color: #d3c6aa !important;
+        --color-accent-primary: #a7c080 !important;
+        --color-accent-secondary: #83c092 !important;
+    }
+
+    * {
+        --color-blue-0: #7fbbb3 !important;
+        --color-blue-10: #7fbbb3 !important;
+        --color-blue-20: #7fbbb3 !important;
+        --color-blue-30: #7fbbb3 !important;
+        --color-blue-40: #7fbbb3 !important;
+        --color-blue-50: #7fbbb3 !important;
+        --color-blue-60: #7fbbb3 !important;
+        --color-blue-70: #7fbbb3 !important;
+        --color-blue-80: #7fbbb3 !important;
+        --color-blue-90: #7fbbb3 !important;
+        --color-cyan-0: #83c092 !important;
+        --color-cyan-10: #83c092 !important;
+        --color-cyan-20: #83c092 !important;
+        --color-cyan-30: #83c092 !important;
+        --color-cyan-40: #83c092 !important;
+        --color-cyan-50: #83c092 !important;
+        --color-cyan-60: #83c092 !important;
+        --color-cyan-70: #83c092 !important;
+        --color-cyan-80: #83c092 !important;
+        --color-cyan-90: #83c092 !important;
+        --color-gray-0: #d3c6aa !important;
+        --color-gray-05: #d3c6aa !important;
+        --color-gray-10: #c8bda5 !important;
+        --color-gray-15: #bdb5a0 !important;
+        --color-gray-20: #b2ac9b !important;
+        --color-gray-25: #a7a496 !important;
+        --color-gray-30: #9da9a0 !important;
+        --color-gray-35: #9da9a0 !important;
+        --color-gray-40: #859289 !important;
+        --color-gray-45: #859289 !important;
+        --color-gray-50: #7a8478 !important;
+        --color-gray-55: #7a8478 !important;
+        --color-gray-60: #56635f !important;
+        --color-gray-65: #4f5b58 !important;
+        --color-gray-70: #475258 !important;
+        --color-gray-75: #3d484d !important;
+        --color-gray-80: #343f44 !important;
+        --color-gray-85: #2d353b !important;
+        --color-gray-90: #232a2e !important;
+        --color-green-0: #a7c080 !important;
+        --color-green-10: #a7c080 !important;
+        --color-green-20: #a7c080 !important;
+        --color-green-30: #a7c080 !important;
+        --color-green-40: #a7c080 !important;
+        --color-green-50: #a7c080 !important;
+        --color-green-60: #a7c080 !important;
+        --color-green-70: #a7c080 !important;
+        --color-green-80: #a7c080 !important;
+        --color-green-90: #a7c080 !important;
+        --color-orange-0: #a7c080 !important;
+        --color-orange-10: #a7c080 !important;
+        --color-orange-20: #a7c080 !important;
+        --color-orange-30: #a7c080 !important;
+        --color-orange-40: #a7c080 !important;
+        --color-orange-50: #a7c080 !important;
+        --color-orange-60: #a7c080 !important;
+        --color-orange-70: #a7c080 !important;
+        --color-orange-80: #a7c080 !important;
+        --color-orange-90: #a7c080 !important;
+        --color-pink-0: #d699b6 !important;
+        --color-pink-10: #d699b6 !important;
+        --color-pink-20: #d699b6 !important;
+        --color-pink-30: #d699b6 !important;
+        --color-pink-40: #d699b6 !important;
+        --color-pink-50: #d699b6 !important;
+        --color-pink-60: #d699b6 !important;
+        --color-pink-70: #d699b6 !important;
+        --color-pink-80: #d699b6 !important;
+        --color-pink-90: #d699b6 !important;
+        --color-purple-0: #d699b6 !important;
+        --color-purple-10: #d699b6 !important;
+        --color-purple-20: #d699b6 !important;
+        --color-purple-30: #d699b6 !important;
+        --color-purple-40: #d699b6 !important;
+        --color-purple-50: #d699b6 !important;
+        --color-purple-60: #d699b6 !important;
+        --color-purple-70: #d699b6 !important;
+        --color-purple-80: #d699b6 !important;
+        --color-purple-90: #d699b6 !important;
+        --color-red-0: #e67e80 !important;
+        --color-red-10: #e67e80 !important;
+        --color-red-20: #e67e80 !important;
+        --color-red-30: #e67e80 !important;
+        --color-red-40: #e67e80 !important;
+        --color-red-50: #e67e80 !important;
+        --color-red-60: #e67e80 !important;
+        --color-red-70: #e67e80 !important;
+        --color-red-80: #e67e80 !important;
+        --color-red-90: #e67e80 !important;
+        --color-violet-0: #d699b6 !important;
+        --color-violet-10: #d699b6 !important;
+        --color-violet-20: #d699b6 !important;
+        --color-violet-30: #d699b6 !important;
+        --color-violet-40: #d699b6 !important;
+        --color-violet-50: #d699b6 !important;
+        --color-violet-60: #d699b6 !important;
+        --color-violet-70: #d699b6 !important;
+        --color-violet-80: #d699b6 !important;
+        --color-violet-90: #d699b6 !important;
+        --color-violet-desaturated-0: #d699b6 !important;
+        --color-violet-desaturated-10: #d699b6 !important;
+        --color-violet-desaturated-20: #d699b6 !important;
+        --color-violet-desaturated-30: #d699b6 !important;
+        --color-violet-desaturated-40: #d699b6 !important;
+        --color-violet-desaturated-50: #d699b6 !important;
+        --color-violet-desaturated-60: #d699b6 !important;
+        --color-violet-desaturated-70: #d699b6 !important;
+        --color-violet-desaturated-80: #d699b6 !important;
+        --color-violet-desaturated-90: #d699b6 !important;
+        --color-yellow-0: #dbbc7f !important;
+        --color-yellow-10: #dbbc7f !important;
+        --color-yellow-20: #dbbc7f !important;
+        --color-yellow-30: #dbbc7f !important;
+        --color-yellow-40: #dbbc7f !important;
+        --color-yellow-50: #dbbc7f !important;
+        --color-yellow-60: #dbbc7f !important;
+        --color-yellow-70: #dbbc7f !important;
+        --color-yellow-80: #dbbc7f !important;
+        --color-yellow-90: #dbbc7f !important;
+    }
+
+    * {
+        --background-color-box: #2d353b !important;
+        --background-color-box-info: #2d353b !important;
+        --background-color-information: #343f44 !important;
+        --background-color-canvas: #232a2e !important;
+        --border-color: #475258 !important;
+        --border-color-deemphasized: #475258 !important;
+        --button-background-color-muted: #343f44 !important;
+        --button-text-color-ghost-disabled: #859289 !important;
+        --button-border: 2px solid var(--border-color) !important;
+        --table-row-background-color-alternate: #2d353b !important;
+        --text-color-accent-primary-selected: #232a2e !important;
+    }
+
+    * {
+        --table-background-color: var(--background-color-box) !important;
+        --table-border-color: var(--border-color) !important;
+        --table-header-background-color: #343f44 !important;
+        --table-row-background-color: var(--background-color-canvas) !important;
+    }
+}

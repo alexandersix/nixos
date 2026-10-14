@@ -110,6 +110,12 @@ On a fresh install, Home Manager seeds it from `home/mango/noctalia.conf`, then
 leaves it under Noctalia's ownership. This gives Mango the checkpointed colors
 before the first template refresh without resetting later theme changes.
 
+Mango uses square window borders and square compositor-drawn tab bars, group
+bars, and jump labels. Noctalia's `shell.corner_radius_scale = 0.0` makes its UI
+square, and the four screen-frame bars use zero radii without concave corners.
+The workspace switcher's separate `capsule_radius` is also zero, giving its
+indicators square corners.
+
 ## Alacritty configuration
 
 Home Manager installs the checkpointed base configuration from
@@ -122,6 +128,47 @@ regenerates it when the desktop theme changes. On a fresh install, Home Manager
 seeds that file from `home/alacritty/themes/noctalia.toml`; afterward Noctalia
 owns it. This provides the current colors before the first template refresh
 without preventing future theme changes.
+
+## Firefox configuration
+
+The system module installs Firefox; `home/firefox.nix` uses Home Manager to
+manage the existing `default` profile at
+`~/.config/mozilla/firefox/p9cdobw7.default`. If restoring this configuration
+on another machine, update the profile path to match `about:profiles` or move
+the intended profile to that path before activation.
+
+The CSS in `home/firefox/` adapts
+[daccfiles browser_stuff](https://git.symlinx.net/daccfiles/tree/.config/browser_stuff?id=faff3d87503a04eea34fe464c4e98f372553ae95)
+to Everforest Dark Medium and the installed Iosevka Fixed terminal font. It
+themes the toolbar, menus, internal pages, and Sidebery with square corners.
+The upstream unsigned theme XPI is replaced by CSS and Firefox's built-in dark
+theme, so extension signature checks remain enabled. These colors are a fixed
+Everforest palette, independent of Noctalia's generated application themes.
+
+Home Manager installs Mozilla's signed Sidebery 5.6.1 XPI with a pinned URL and
+SHA-256 hash. Its sidebar CSS is included in `userContent.css`, scoped to
+Sidebery's sidebar page; there is no manual Style editor import. Sidebery's
+settings, panels, and tab trees remain writable and survive rebuilds.
+
+Click Sidebery's toolbar button to open vertical tabs. Firefox's horizontal
+tab bar hides while Sidebery is open and returns when it is closed. Firefox's
+native vertical tabs and the extra sidebar launcher rail are disabled to keep
+the supplied minimal layout. Sidebery works
+in private windows after enabling **Run in Private Windows** in its add-on
+settings; otherwise those windows retain the horizontal tab bar.
+
+Activation pins Sidebery in the saved toolbar layout and the native vertical-tab
+layout backup, preserving the other toolbar placements. This step runs only
+when Firefox is closed, since Firefox saves those preferences at shutdown.
+The first changed `prefs.js` is backed up as `prefs.js.before-sidebery-pin`.
+Sidebery can also be toggled with **Ctrl+E**.
+
+After changing the CSS or preferences, rebuild and fully restart Firefox.
+Home Manager owns `profiles.ini`, `user.js`, both chrome CSS files, and the
+Sidebery XPI; edit their repository sources rather than the installed files.
+Existing files are backed up with Home Manager's configured `.backup` suffix
+on first activation. Bookmarks, history, logins, and browser session data stay
+in the existing profile.
 
 ## Zed configuration
 
