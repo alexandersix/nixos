@@ -150,12 +150,12 @@ SHA-256 hash. Its sidebar CSS is included in `userContent.css`, scoped to
 Sidebery's sidebar page; there is no manual Style editor import. Sidebery's
 settings, panels, and tab trees remain writable and survive rebuilds.
 
-Click Sidebery's toolbar button to open vertical tabs. Firefox's horizontal
-tab bar hides while Sidebery is open and returns when it is closed. Firefox's
+Click Sidebery's toolbar button or press **Ctrl+E** to toggle vertical tabs.
+Firefox's horizontal tab bar stays hidden even when Sidebery is closed. Firefox's
 native vertical tabs and the extra sidebar launcher rail are disabled to keep
 the supplied minimal layout. Sidebery works
 in private windows after enabling **Run in Private Windows** in its add-on
-settings; otherwise those windows retain the horizontal tab bar.
+settings; the horizontal tab bar is hidden there too.
 
 Activation pins Sidebery in the saved toolbar layout and the native vertical-tab
 layout backup, preserving the other toolbar placements. This step runs only

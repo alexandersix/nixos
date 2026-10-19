@@ -48,10 +48,8 @@
 
   * { border-radius: 0 !important; }
 
-  /* Keep Firefox's tabs available whenever Sidebery is closed or unavailable.
-   * This also leaves private windows usable without enabling the extension there.
-   */
-  :root:has(#sidebar-box[sidebarcommand="_3c078156-979c-498b-8990-85f7987dd929_-sidebar-action"]:not([hidden])) #TabsToolbar {
+  /* Use Sidebery for tabs; keep the horizontal strip hidden in every window. */
+  #TabsToolbar {
     display: none !important;
   }
 
