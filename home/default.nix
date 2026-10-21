@@ -160,6 +160,7 @@ in {
       alacritty
       file-roller
       gnome-font-viewer
+      gtk3 # gtk-launch opens installed web apps from Mango keybindings.
       imv
       nautilus
       kdePackages.okular
