@@ -267,6 +267,12 @@ Chromeless Chromium web apps are declared in `home/webapps.nix`. Each entry
 generates an immutable `chromium --app=<URL>` launcher and a desktop entry that
 Noctalia discovers automatically. Icons live in `home/webapps/icons/`.
 
+Launchers explicitly select `--profile-directory=Default`, the directory for
+the Personal profile on this host, so they share its sign-ins regardless of the
+last-used Chromium profile. Figma uses `Default` inside its separate
+`~/.config/chromium-webapps/figma` user data directory because its font helper
+requires a dedicated browser process with a Windows user agent.
+
 Add or remove an entry and rebuild to update the launcher:
 
 ```console

@@ -56,8 +56,12 @@
   };
 
   mkWebApp = id: app: let
+    # The Personal profile's directory is "Default", regardless of which
+    # profile Chromium used most recently. Apps with a separate user-data-dir
+    # (Figma) select Default within that isolated directory instead.
     launcher = pkgs.writeShellScript "webapp-${id}" ''
       exec ${lib.getExe pkgs.chromium} \
+        --profile-directory=Default \
         ${lib.escapeShellArgs (app.chromiumArgs or [])} \
         --app=${lib.escapeShellArg app.url}
     '';
