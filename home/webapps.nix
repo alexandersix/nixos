@@ -7,6 +7,18 @@
   # Keep web app IDs stable: Home Manager uses them for the .desktop filenames,
   # while `name` is only the label shown by the application launcher.
   webApps = {
+    amp = {
+      name = "Amp";
+      url = "https://ampcode.com/";
+      icon = ./webapps/icons/amp.svg;
+    };
+
+    chatgpt = {
+      name = "ChatGPT";
+      url = "https://chatgpt.com/";
+      icon = ./webapps/icons/chatgpt.svg;
+    };
+
     figma = {
       name = "Figma";
       url = "https://www.figma.com/";
