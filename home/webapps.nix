@@ -36,6 +36,12 @@
       ];
     };
 
+    linear = {
+      name = "Linear";
+      url = "https://linear.app/";
+      icon = ./webapps/icons/linear.svg;
+    };
+
     todoist = {
       name = "Todoist";
       url = "https://app.todoist.com/app/today";
