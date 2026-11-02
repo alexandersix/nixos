@@ -1,5 +1,6 @@
 {
   "toolkit.legacyUserProfileCustomizations.stylesheets": true,
+  "userchrome.sidebery.hover": true,
   "extensions.autoDisableScopes": 0,
   "extensions.activeThemeID": "firefox-compact-dark@mozilla.org",
   "browser.theme.content-theme": 0,

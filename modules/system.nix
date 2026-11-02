@@ -149,9 +149,21 @@
     };
   };
 
-  # Keep a second rendering engine available for compatibility and recovery.
-  # Chromium remains the primary browser used by Mango and the web-app module.
-  programs.firefox.enable = true;
+  # Firefox is the default browser; Chromium also powers the web-app launchers.
+  programs.firefox = {
+    enable = true;
+    package = pkgs.firefox.override {
+      # Allow our packaged AutoConfig script to use Firefox's chrome APIs.
+      extraAutoConfig = ''pref("general.config.sandbox_enabled", false);'';
+    };
+    # Embed the script in the generated AutoConfig file. Passing a raw path to
+    # autoConfigFiles loses its store dependency in the Firefox wrapper.
+    autoConfig = builtins.readFile ../home/firefox/sidebery-hover.js;
+    policies.ExtensionSettings."{d634138d-c276-4fc8-924b-40a0ea21d284}" = {
+      installation_mode = "force_installed";
+      install_url = "https://addons.mozilla.org/firefox/downloads/latest/1password-x-password-manager/latest.xpi";
+    };
+  };
 
   programs = {
     _1password.enable = true;

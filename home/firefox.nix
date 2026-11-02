@@ -19,6 +19,15 @@
     passthru.addonId = sideberyId;
   };
 in {
+  home.sessionVariables.BROWSER = "firefox";
+
+  xdg.mimeApps.defaultApplications = {
+    "text/html" = ["firefox.desktop"];
+    "application/xhtml+xml" = ["firefox.desktop"];
+    "x-scheme-handler/http" = ["firefox.desktop"];
+    "x-scheme-handler/https" = ["firefox.desktop"];
+  };
+
   programs.firefox = {
     enable = true;
     # The system module already installs Firefox and its native messaging hosts.

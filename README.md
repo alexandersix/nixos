@@ -131,6 +131,13 @@ without preventing future theme changes.
 
 ## Firefox configuration
 
+Firefox is the default handler for HTTP/HTTPS links and HTML files, the
+`BROWSER` session default, and the **Super+B** launcher. **Super+Shift+B** opens
+Firefox's profile manager. The system Firefox
+policy automatically installs and updates the official
+[1Password extension](https://addons.mozilla.org/firefox/addon/1password-x-password-manager/)
+in every profile.
+
 The system module installs Firefox; `home/firefox.nix` uses Home Manager to
 manage the existing `default` profile at
 `~/.config/mozilla/firefox/p9cdobw7.default`. If restoring this configuration
@@ -151,6 +158,28 @@ Sidebery's sidebar page; there is no manual Style editor import. Sidebery's
 settings, panels, and tab trees remain writable and survive rebuilds.
 
 Click Sidebery's toolbar button or press **Ctrl+E** to toggle vertical tabs.
+When the sidebar is closed, hover over the leftmost **8 pixels** of the content
+area, below the toolbar, for **50 ms** to preview Sidebery. The preview slides in
+from the left over 160 ms (unless reduced motion is enabled). It overlays
+the page at 280 pixels wide without moving or resizing the page. After the
+pointer leaves it, a 30 ms delay is followed by a 160 ms slide back to the left
+before the panel closes. Returning to the panel cancels closing. With reduced
+motion enabled, it closes after the 30 ms delay without animating.
+A manually opened sidebar stays docked and
+open until toggled closed. **Ctrl+E** also closes a hover preview; move away from
+the edge and back to preview again, or press **Ctrl+E** again to open it docked.
+
+`home/firefox/sidebery-hover.js` uses Firefox's AutoConfig chrome APIs because
+closing a sidebar unloads its document, so CSS alone cannot reopen it. The
+system Firefox wrapper loads this repository-owned script with the AutoConfig
+sandbox disabled; web-content sandbox settings and extension signature checks
+are unchanged. The script is enabled only in profiles with
+`userchrome.sidebery.hover = true` and leaves Firefox's native toggle methods
+intact. Its invisible edge and temporary overlay are styled in `userChrome.css`.
+To disable hover previews, set that preference to `false` in
+`home/firefox/preferences.json` and rebuild. The script also skips Troubleshoot
+Mode, private windows without Sidebery access, and DOM fullscreen video.
+
 Firefox's horizontal tab bar stays hidden even when Sidebery is closed. Firefox's
 native vertical tabs and the extra sidebar launcher rail are disabled to keep
 the supplied minimal layout. Sidebery works
@@ -161,9 +190,9 @@ Activation pins Sidebery in the saved toolbar layout and the native vertical-tab
 layout backup, preserving the other toolbar placements. This step runs only
 when Firefox is closed, since Firefox saves those preferences at shutdown.
 The first changed `prefs.js` is backed up as `prefs.js.before-sidebery-pin`.
-Sidebery can also be toggled with **Ctrl+E**.
 
-After changing the CSS or preferences, rebuild and fully restart Firefox.
+After changing the CSS, preferences, or hover script, close Firefox, run
+`sudo nixos-rebuild switch --flake path:.#desktop`, and reopen Firefox.
 Home Manager owns `profiles.ini`, `user.js`, both chrome CSS files, and the
 Sidebery XPI; edit their repository sources rather than the installed files.
 Existing files are backed up with Home Manager's configured `.backup` suffix

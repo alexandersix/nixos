@@ -53,14 +53,54 @@
     display: none !important;
   }
 
-  #sidebar-box[sidebarcommand="_3c078156-979c-498b-8990-85f7987dd929_-sidebar-action"] {
+  #sidebar-box:is([sidebarcommand="_3c078156-979c-498b-8990-85f7987dd929_-sidebar-action"], [sidebery-active]) {
     padding-inline-start: 0 !important;
     background-color: #232a2e !important;
     color: #d3c6aa !important;
     min-width: 220px !important;
   }
 
-  #sidebar-box[sidebarcommand="_3c078156-979c-498b-8990-85f7987dd929_-sidebar-action"] #sidebar-header {
+  #sidebar-box:is([sidebarcommand="_3c078156-979c-498b-8990-85f7987dd929_-sidebar-action"], [sidebery-active]) #sidebar-header {
+    display: none !important;
+  }
+
+  /* The invisible edge sits below the toolbars and occupies no page width. */
+  #browser { position: relative !important; }
+
+  #sidebery-hover-edge:not([hidden]) {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 8px;
+    z-index: 6;
+  }
+
+  /* Only a hover-opened panel overlays the page. Manually opened Sidebery
+   * keeps its normal docked layout and resizable width.
+   */
+  #sidebar-box[sidebery-peek]:not([hidden]) {
+    position: absolute !important;
+    inset: 0 auto 0 0 !important;
+    width: 280px !important;
+    max-width: 75vw !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    z-index: 5 !important;
+    background-color: #232a2e !important;
+    border-right: 1px solid #475258 !important;
+    box-shadow: 4px 0 12px #0006 !important;
+    animation: sidebery-peek-in 160ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  @keyframes sidebery-peek-in {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #sidebar-box[sidebery-peek]:not([hidden]) { animation: none; }
+  }
+
+  #sidebar-box[sidebery-peek] ~ #sidebar-splitter {
     display: none !important;
   }
 
