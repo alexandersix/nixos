@@ -39,6 +39,8 @@
   }: let
     system = "x86_64-linux";
     pkgs = nixpkgs.legacyPackages.${system};
+    herdrCore = pkgs.callPackage ./packages/herdr-core.nix {};
+    herdrApp = pkgs.callPackage ./packages/herdr-app.nix {herdr-core = herdrCore;};
     pkgsUnstable = import nixpkgsUnstable {
       inherit system;
       config.allowUnfreePredicate = package:
@@ -68,6 +70,11 @@
       text = builtins.readFile ./scripts/install-private-fonts.sh;
     };
   in {
+    packages.${system} = {
+      herdr-core = herdrCore;
+      herdr-app = herdrApp;
+    };
+
     nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
       inherit system;
       specialArgs = {inherit inputs pkgsUnstable;};

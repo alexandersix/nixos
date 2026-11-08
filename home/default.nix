@@ -161,6 +161,8 @@ in {
       file-roller
       gnome-font-viewer
       gtk3 # gtk-launch opens installed web apps from Mango keybindings.
+      inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.herdr-app
+      inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.herdr-core
       imv
       nautilus
       kdePackages.okular
@@ -203,7 +205,18 @@ in {
       alejandra
       beekeeper-studio
       bruno
-      pkgsUnstable.codex
+      # The current Codex recipe omits system libraries requested by its Rust
+      # dependencies. zstd-sys also requests the static archive.
+      (pkgsUnstable.codex.overrideAttrs (old: {
+        buildInputs =
+          (old.buildInputs or [])
+          ++ [
+            pkgsUnstable.aws-lc
+            pkgsUnstable.oniguruma
+            pkgsUnstable.sqlite
+            (pkgsUnstable.zstd.override {enableStatic = true;})
+          ];
+      }))
       deadnix
       pkgsUnstable.devenv
       docker-buildx
@@ -227,7 +240,6 @@ in {
       python3
       statix
       whisper-cpp
-      pkgsUnstable.worktrunk
       xh
 
       # Web development convenience tools. Projects should still pin exact
@@ -1045,7 +1057,7 @@ in {
                 type = "login_box";
 
                 settings = {
-                  background_color = "surface_variant";
+                  background_color = "surface_container";
                   background_opacity = 0.88;
                   background_radius = 0.0;
                   center_password_text = false;
@@ -1262,7 +1274,6 @@ in {
       initContent = ''
         export PATH="$HOME/.local/bin:$PATH"
         bindkey -M viins '^R' history-incremental-search-backward
-        eval "$(${pkgsUnstable.worktrunk}/bin/wt config shell init zsh)"
       '';
       shellAliases = {
         c = "clear";

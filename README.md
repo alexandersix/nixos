@@ -101,6 +101,34 @@ lock, release-note state, sessions, sockets, and logs alongside the managed
 configuration. The TOML snapshot contains no Nix-specific syntax and can also
 be linked directly on non-NixOS systems.
 
+The desktop app is installed alongside the TUI: `herdr` still opens the TUI,
+while `herdr-app` or the **Herdr** application launcher opens the desktop app.
+The desktop backend is available separately as `herdr-core` (also `hc`). Its
+state is separate from the TUI; existing TUI sessions stay in the TUI.
+
+Until [the Nixpkgs desktop/core proposal](https://github.com/NixOS/nixpkgs/pull/581031)
+is merged and reaches a pinned input, `packages/herdr-app.nix` and
+`packages/herdr-core.nix` package the same Linux x86-64 archives used by the
+[official installer](https://releases.herdr.dev/app/install.sh). Both URLs and
+SHA-256 hashes are pinned, so rebuilds never execute the installer or fetch a
+floating latest release. The current pins are app 0.1.12 and core 0.1.17.
+
+Update these versions and hashes using the official
+[app manifest](https://releases.herdr.dev/app/latest.json) and
+[core manifest](https://releases.herdr.dev/core/latest.json), keeping the core
+at least as new as the app's `core_min`. Convert each archive's hex `sha256`
+with `nix hash convert --hash-algo sha256 --to sri <sha256>`, then validate with:
+
+```console
+nix build .#herdr-app .#herdr-core --no-link
+nix flake check
+```
+
+Activate with the normal NixOS rebuild. Updates are managed by Nix: the app's
+icon is installed separately from its executable to disable its self-updater,
+and the core recognizes its Nix store location. Desktop settings, layouts,
+mods, and state remain writable and are not managed by Home Manager.
+
 ## Mango configuration
 
 Home Manager owns Mango's stable `config.conf`, `application-rules.conf`, and
